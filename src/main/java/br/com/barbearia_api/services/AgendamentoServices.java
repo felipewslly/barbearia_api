@@ -18,7 +18,7 @@ public interface AgendamentoServices {
 
     List<Agendamento> removerAgendamentoPorId(Long agendamentoId);
 
-    Optional<Agendamento> todosAgendamentos(Long agendamentoId);
+    List<Agendamento> todosAgendamentos();
 
     List<Agendamento> agendamentoPorData(LocalDate data);
 

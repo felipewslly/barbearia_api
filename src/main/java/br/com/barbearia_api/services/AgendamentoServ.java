@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,34 +71,60 @@ public class AgendamentoServ implements AgendamentoServices{
 
     @Override
     public List<Agendamento> removerAgendamentoPorId(Long agendamentoId) {
-       Agendamento agendamento = agendamentoRepo.findById(agendamentoId).orElseThrow(
-               () -> new IllegalArgumentException("ID não existente"));
+       try{
+           if (!agendamentoRepo.existsById(agendamentoId)){
+               throw new IllegalArgumentException("ID do agendamento não encontrado");
+           }
+            agendamentoRepo.deleteById(agendamentoId);
+       }catch(IllegalArgumentException e){
+           throw e;
+       }catch (Exception e){
+           throw new RuntimeException("Erro ao excluir agendamento", e);
+       }
 
-        agendamentoRepo.deleteById(agendamentoId);
-
-
-        return agendamentoRepo.findAll();
+       return agendamentoRepo.findAll();
 
 
     }
 
     @Override
-    public Optional<Agendamento> todosAgendamentos(Long agendamentoId) {
-        return Optional.empty();
+    public List<Agendamento> todosAgendamentos() {
+
+            List<Agendamento> agendamentos = agendamentoRepo.findAll();
+                if (agendamentos.isEmpty()){
+                    throw new RuntimeException("LISTA DE AGENDAMENTO VAZIA");
+                }
+                return agendamentos;
+
+
+
     }
 
     @Override
     public List<Agendamento> agendamentoPorData(LocalDate data) {
-        return List.of();
+        List<Agendamento> agendamentos = agendamentoRepo.findByDate(data);
+            if (agendamentos.isEmpty()){
+                throw new IllegalArgumentException("DATA NÃO REGISTRADA");
+            }
+            return agendamentos;
     }
 
     @Override
     public List<Agendamento> agendamentoPorCliente(Long clienteId) {
-        return List.of();
+        List<Agendamento> agendamentos = agendamentoRepo.findByClientId(clienteId);
+            if (agendamentos.isEmpty()){
+                throw new RuntimeException("ID DO CLIENTE NÃO ENCONTRADO");
+            }
+            return agendamentos;
     }
 
     @Override
     public List<Agendamento> agendamentoPorServicos(Long servicoId) {
-        return List.of();
+        List<Agendamento> agendamentos = agendamentoRepo.findByServiceId(servicoId);
+
+            if (agendamentos.isEmpty()){
+                throw new RuntimeException("ID DO SERVIÇO NÃO ENCONTRADO");
+            }
+            return agendamentos;
     }
 }
