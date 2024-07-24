@@ -5,7 +5,7 @@ import br.com.barbearia_api.model.entity.Cliente;
 import br.com.barbearia_api.model.entity.Servico;
 import br.com.barbearia_api.repository.AgendamentoRepo;
 import br.com.barbearia_api.repository.ClienteRepo;
-import br.com.barbearia_api.repository.ServiceRepo;
+import br.com.barbearia_api.repository.ServicoRepo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class AgendamentoServ implements AgendamentoServices{
 
-    private ServiceRepo serviceRepo;
+    private ServicoRepo serviceRepo;
     private AgendamentoRepo agendamentoRepo;
     private ClienteRepo clienteRepo;
     @Override

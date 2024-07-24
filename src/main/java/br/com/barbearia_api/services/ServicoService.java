@@ -11,17 +11,14 @@ import java.util.Optional;
 
 public interface ServicoService {
 
-    Servico registrarServico(LocalDate data, LocalTime hora, String corte, String preco);
+    Servico registrarServico(String corte, String preco);
 
     Servico atualizarServicoPorId(Long servicoId, LocalDate novaData, LocalTime novaHora, String novoCorte, String novoPreco);
 
     List<Servico> todosServicos();
 
-    Optional<Servico> removerServicoPorId(Long servicoId);
+    List<Servico> removerServicoPorId(Long servicoId);
 
-    List<Servico> servicoPorData(LocalDate data);
-
-    List<Servico> servicoPorHora(LocalTime hora);
 
 
 

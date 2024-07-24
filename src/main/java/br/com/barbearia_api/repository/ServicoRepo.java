@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 
 
 import java.security.Provider;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 @Repository
-public interface ServiceRepo extends JpaRepository<Servico, Long> {
+public interface ServicoRepo extends JpaRepository<Servico, Long> {
+
 }
