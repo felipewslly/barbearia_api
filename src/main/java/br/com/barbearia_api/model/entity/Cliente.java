@@ -23,13 +23,13 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "telefone")
+    @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @Column(name = "endereço" )
+    @Column(name = "endereço",nullable = false )
     private String endereco;
 
     @OneToMany(mappedBy = "cliente")

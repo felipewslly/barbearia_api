@@ -22,10 +22,10 @@ public class Servico {
     private Long id;
 
 
-    @Column(name = "corte")
+    @Column(name = "corte", nullable = false)
     private String corte;
 
-    @Column(name = "preco")
+    @Column(name = "preco", nullable = false)
     private String preco;
 
     @ManyToMany

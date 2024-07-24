@@ -3,6 +3,8 @@ package br.com.barbearia_api.services;
 import br.com.barbearia_api.model.entity.Cliente;
 
 import java.util.List;
+import java.util.Optional;
+
 
 public interface ClienteServices {
 
@@ -14,7 +16,7 @@ public interface ClienteServices {
 
     Cliente deletarClienteId(Long clienteId);
 
-    Cliente atualizarPorId(Long clienteId, Cliente clienteAtt);
+   Optional<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt);
 
 
 }
