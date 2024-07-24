@@ -13,7 +13,7 @@ import java.util.List;
 public class ServiceServ implements ServicoService{
 
 
-     ServicoRepo servicoRepo;
+    private ServicoRepo servicoRepo;
 
     @Override
     public Servico registrarServico(String corte, String preco) {

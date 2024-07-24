@@ -16,7 +16,7 @@ public interface ClienteServices {
 
     Cliente deletarClienteId(Long clienteId);
 
-   Optional<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt);
+   List<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt);
 
 
 }

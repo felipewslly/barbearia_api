@@ -64,7 +64,7 @@ public class ClientesServ implements ClienteServices{
     }
 
     @Override
-    public Optional<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt) {
+    public List<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt) {
         Optional<Cliente> clienteOp = clienteRepo.findById(clienteId);
 
             if (clienteOp.isPresent()){
