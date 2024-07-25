@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ClientesServ implements ClienteServices {
 
     @Autowired
-    ClienteRepo clienteRepo;
+    private ClienteRepo clienteRepo;
 
     @Override
     public Clientes criarCliente(Clientes cliente) {
@@ -53,13 +53,13 @@ public class ClientesServ implements ClienteServices {
     public Clientes deletarClienteId(Long clienteId) {
         try{
             if (!clienteRepo.existsById(clienteId)){
-                throw new IllegalArgumentException("ID do agendamento não encontrado");
+                throw new IllegalArgumentException("ID do cliente não encontrado");
             }
-            clienteRepo.deleteById(clienteId);
+                clienteRepo.deleteById(clienteId);
         }catch(IllegalArgumentException e){
             throw e;
         }catch (Exception e){
-            throw new RuntimeException("Erro ao excluir agendamento", e);
+            throw new RuntimeException("Erro ao excluir o usuario", e);
         }
 
         return (Clientes) clienteRepo.findAll();

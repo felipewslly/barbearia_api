@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface AgendamentoServices {
 
-    Agendamento criarAgendamento (LocalDate data, LocalTime hora, Long clienteId, Long serviceId);
+    Agendamento criarAgendamento (Agendamento agendamento);
 
-    Optional<Agendamento> atualizarAgendamento(Long agendamentoId, LocalDate novaData, LocalTime novaHora, Servico novoServico);
+    Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt);
 
     List<Agendamento> removerAgendamentoPorId(Long agendamentoId);
 

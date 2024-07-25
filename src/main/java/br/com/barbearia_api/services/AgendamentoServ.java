@@ -1,7 +1,7 @@
 package br.com.barbearia_api.services;
 
 import br.com.barbearia_api.model.entity.Agendamento;
-import br.com.barbearia_api.model.entity.Cliente;
+import br.com.barbearia_api.model.entity.Clientes;
 import br.com.barbearia_api.model.entity.Servico;
 import br.com.barbearia_api.repository.AgendamentoRepo;
 import br.com.barbearia_api.repository.ClienteRepo;
@@ -27,50 +27,40 @@ public class AgendamentoServ implements AgendamentoServices {
     private AgendamentoRepo agendamentoRepo;
     private ClienteRepo clienteRepo;
     @Override
-    public Agendamento criarAgendamento(LocalDate data, LocalTime hora, Long clienteId, Long serviceId) {
-        if (data == null || hora == null || clienteId == null || serviceId == null){
+    public Agendamento criarAgendamento(Agendamento agendamento) {
+        if (agendamento.getData() == null || agendamento.getHora() == null ||
+            agendamento.getCliente() == null || agendamento.getServicos() == null){
             throw new IllegalArgumentException("Parâmetros não podem estar vazios");
         }
 
-        Cliente cliente = clienteRepo.findById(clienteId).orElseThrow(
+        Clientes cliente = clienteRepo.findById(agendamento.getCliente().getId()).orElseThrow(
                 () -> new IllegalArgumentException("Cliente não encontrado"));
 
-        Servico service = serviceRepo.findById(serviceId).orElseThrow(
-                () -> new IllegalArgumentException("Serviço não encontrado"));
-
-        Agendamento agendamento = new Agendamento();
-        agendamento.setData(data);
-        agendamento.setHora(hora);
+        for (Servico service : agendamento.getServicos()){
+            serviceRepo.findById(service.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Serviço nao encontrado"));
+        }
         agendamento.setCliente(cliente);
-        List<Servico> servicos = new ArrayList<>();
-        servicos.add(service);
-        agendamento.setServicos(servicos);
-
-
         return agendamentoRepo.save(agendamento);
-
-
     }
+
     @Override
-    public Optional<Agendamento> atualizarAgendamento(Long agendamentoId, LocalDate novaData, LocalTime novaHora, Servico novoServico) {
+    public Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
         Agendamento agendamento = agendamentoRepo.findById(agendamentoId).orElseThrow(
                 () -> new IllegalArgumentException("Agendamento não existe"));
-        agendamento.setData(novaData);
-        agendamento.setHora(novaHora);
+        agendamento.setData(LocalDate.from(agendamento.getData()));
+        agendamento.setHora(LocalTime.from(agendamento.getHora()));
+        agendamento.setServicos(agendamento.getServicos());
+        agendamento.setFuncionarios(agendamento.getFuncionarios());
 
-        List<Servico> servicos = new ArrayList<>();
-        servicos.add(novoServico);
-        agendamento.setServicos(servicos);
-
-        Agendamento agendamentoAtualizado = agendamentoRepo.save(agendamento);
-
-            return Optional.of(agendamentoRepo.save(agendamentoAtualizado));
+        return agendamentoRepo.save(agendamento);
 
 
     }
 
     @Override
     public List<Agendamento> removerAgendamentoPorId(Long agendamentoId) {
+                    agendamentoRepo.findAll();
        try{
            if (!agendamentoRepo.existsById(agendamentoId)){
                throw new IllegalArgumentException("ID do agendamento não encontrado");
@@ -89,15 +79,11 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public List<Agendamento> todosAgendamentos() {
-
-            List<Agendamento> agendamentos = agendamentoRepo.findAll();
-                if (agendamentos.isEmpty()){
-                    throw new RuntimeException("LISTA DE AGENDAMENTO VAZIA");
-                }
-                return agendamentos;
-
-
-
+        List<Agendamento> todosAgendamentos = agendamentoRepo.findAll();
+            if (todosAgendamentos.isEmpty()){
+                throw new RuntimeException("LISTA DE AGENDAMENTO VAZIA");
+            }
+                return todosAgendamentos;
     }
 
     @Override
@@ -111,20 +97,21 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public List<Agendamento> agendamentoPorCliente(Long clienteId) {
-        List<Agendamento> agendamentos = agendamentoRepo.findByClientId(clienteId);
-            if (agendamentos.isEmpty()){
+        List<Agendamento> clienteAgendado = agendamentoRepo.findByClientId(clienteId);
+            if (clienteAgendado.isEmpty()){
                 throw new RuntimeException("ID DO CLIENTE NÃO ENCONTRADO");
             }
-            return agendamentos;
+            return clienteAgendado;
     }
 
     @Override
     public List<Agendamento> agendamentoPorServicos(Long servicoId) {
-        List<Agendamento> agendamentos = agendamentoRepo.findByServiceId(servicoId);
+        List<Agendamento> agendamentoPorServico = agendamentoRepo.findByServiceId(servicoId);
 
-            if (agendamentos.isEmpty()){
+            if (agendamentoPorServico.isEmpty()){
                 throw new RuntimeException("ID DO SERVIÇO NÃO ENCONTRADO");
             }
-            return agendamentos;
+            return agendamentoPorServico;
     }
+
 }
