@@ -10,26 +10,29 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "servicos")
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Servico {
+@Entity
+@Table(name= "clientes")
+public class Clientes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nome", nullable = false)
+    private String nome;
 
-    @Column(name = "corte", nullable = false)
-    private String corte;
+    @Column(name = "telefone", nullable = false)
+    private String telefone;
 
-    @Column(name = "preco", nullable = false)
-    private String preco;
+    @Column(name = "endereço",nullable = false )
+    private String endereco;
 
-    @ManyToMany(mappedBy = "servicos")
-    private List<Agendamento> agendamentos = new ArrayList<>();
-
+    @OneToMany(mappedBy = "cliente")
+    private List<Agendamento> agendametos = new ArrayList<>();
 
 }

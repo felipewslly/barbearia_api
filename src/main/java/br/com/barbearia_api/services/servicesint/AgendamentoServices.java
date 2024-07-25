@@ -1,9 +1,7 @@
-package br.com.barbearia_api.services;
+package br.com.barbearia_api.services.servicesint;
 
 import br.com.barbearia_api.model.entity.Agendamento;
 import br.com.barbearia_api.model.entity.Servico;
-import org.apache.catalina.LifecycleState;
-import org.hibernate.graph.internal.AbstractGraphNode;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

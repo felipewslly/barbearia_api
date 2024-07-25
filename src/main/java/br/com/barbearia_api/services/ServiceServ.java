@@ -3,14 +3,14 @@ package br.com.barbearia_api.services;
 import br.com.barbearia_api.model.entity.Servico;
 
 import br.com.barbearia_api.repository.ServicoRepo;
-import org.apache.catalina.Service;
+import br.com.barbearia_api.services.servicesint.ServicoService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 
-public class ServiceServ implements ServicoService{
+public class ServiceServ implements ServicoService {
 
 
     private ServicoRepo servicoRepo;

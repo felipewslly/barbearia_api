@@ -1,7 +1,9 @@
 package br.com.barbearia_api.services;
 
-import br.com.barbearia_api.model.entity.Cliente;
+
+import br.com.barbearia_api.model.entity.Clientes;
 import br.com.barbearia_api.repository.ClienteRepo;
+import br.com.barbearia_api.services.servicesint.ClienteServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,31 +15,33 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
-public class ClientesServ implements ClienteServices{
+public class ClientesServ implements ClienteServices {
 
     @Autowired
     ClienteRepo clienteRepo;
 
     @Override
-    public Cliente criarCliente(Cliente cliente) {
-        Cliente cliente1 = new Cliente();
-        cliente1.setNome(cliente.getNome());
-        cliente1.setEndereco(cliente.getEndereco());
-        cliente1.setTelefone(cliente.getTelefone());
+    public Clientes criarCliente(Clientes cliente) {
+        if (cliente == null){
+            throw new IllegalArgumentException("O CAMPO NÃO PODE ESTAR VAZIO");
+        }
+            Clientes cliente1 = new Clientes();
+            cliente1.setNome(cliente.getNome());
+            cliente1.setEndereco(cliente.getEndereco());
+            cliente1.setTelefone(cliente.getTelefone());
 
-           return clienteRepo.save(cliente1);
-    }
+               return clienteRepo.save(cliente1);
+        }
 
     @Override
-    public Cliente clientePorId(Long clienteId) {
-        Cliente clientes = clienteRepo.findById(clienteId).orElseThrow(
+    public Clientes clientePorId(Long clienteId) {
+        return clienteRepo.findById(clienteId).orElseThrow(
                 ()-> new IllegalArgumentException("ID DO CLIENTE NÃO EXISTE"));
-        return clientes;
     }
 
     @Override
-    public List<Cliente> todosClientes() {
-        List<Cliente> clientes = clienteRepo.findAll();
+    public List<Clientes> todosClientes() {
+        List<Clientes> clientes = clienteRepo.findAll();
             if (clientes.isEmpty()){
                 throw new RuntimeException("LISTA VAZIA");
             }
@@ -46,7 +50,7 @@ public class ClientesServ implements ClienteServices{
     }
 
     @Override
-    public Cliente deletarClienteId(Long clienteId) {
+    public Clientes deletarClienteId(Long clienteId) {
         try{
             if (!clienteRepo.existsById(clienteId)){
                 throw new IllegalArgumentException("ID do agendamento não encontrado");
@@ -58,23 +62,31 @@ public class ClientesServ implements ClienteServices{
             throw new RuntimeException("Erro ao excluir agendamento", e);
         }
 
-        return (Cliente) clienteRepo.findAll();
+        return (Clientes) clienteRepo.findAll();
 
 
     }
 
     @Override
-    public List<Cliente> atualizarPorId(Long clienteId, Cliente clienteAtt) {
-        Optional<Cliente> clienteOp = clienteRepo.findById(clienteId);
+    public List<Clientes> atualizarPorId(Long clienteId, Clientes clienteAtt) {
+        Optional<Clientes> clientesIds = clienteRepo.findById(clienteId);
 
-            if (clienteOp.isPresent()){
-                Cliente cliente = clienteOp.get();
-                cliente.setNome(cliente.getNome());
-                cliente.setTelefone(cliente.getTelefone());
-                cliente.setEndereco(cliente.getEndereco());
-                clienteRepo.save(cliente);
-                    return Optional.of(cliente);
+        if (clientesIds.isPresent()) {
+            Clientes clientes = clientesIds.get();
+            if (clienteAtt.getNome() != null) {
+                clientes.setNome(clienteAtt.getNome());
             }
-            return clienteOp;
+            if (clienteAtt.getEndereco() != null) {
+                clientes.setEndereco(clienteAtt.getEndereco());
+            }
+            if (clienteAtt.getTelefone() != null) {
+                clientes.setTelefone(clienteAtt.getTelefone());
+            }
+            clienteRepo.save(clientes);
+        } else {
+            throw new RuntimeException("Cliente não encontrado com este ID: " + clientesIds);
+        }
+
+        return clienteRepo.findAll();
     }
 }

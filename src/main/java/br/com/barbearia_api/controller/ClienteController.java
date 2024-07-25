@@ -1,6 +1,7 @@
 package br.com.barbearia_api.controller;
 
 import br.com.barbearia_api.model.entity.Cliente;
+import br.com.barbearia_api.model.entity.Clientes;
 import br.com.barbearia_api.services.ClientesServ;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -21,20 +23,20 @@ public class ClienteController extends ClientesServ {
 
 
         @PostMapping(consumes = "application/json", produces = "application/json")
-        public ResponseEntity<Cliente> createCliente(@RequestBody Cliente clienteiD){
-            Cliente cliente = clientesServ.criarCliente(clienteiD);
+        public ResponseEntity<Clientes> createCliente(@RequestBody Clientes clienteiD){
+            Clientes cliente = clientesServ.criarCliente(clienteiD);
             return new ResponseEntity<>(cliente, HttpStatus.CREATED);
 
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<Cliente> findClienteById(Long clienteId){
-            Cliente cliente = clientesServ.clientePorId(clienteId);
+        public ResponseEntity<Clientes> findClienteById(Long clienteId){
+            Clientes cliente = clientesServ.clientePorId(clienteId);
             return ResponseEntity.ok(cliente);
         }
         @GetMapping
-        public ResponseEntity<List<Cliente>> allClientes(){
-            List<Cliente> cliente = clientesServ.todosClientes();
+        public ResponseEntity<List<Clientes>> allClientes(){
+            List<Clientes> cliente = clientesServ.todosClientes();
                 return ResponseEntity.ok(cliente);
         }
         @DeleteMapping("/{id}")
@@ -47,10 +49,12 @@ public class ClienteController extends ClientesServ {
         }
 
         @PutMapping("/{id}")
-        public ResponseEntity<List<Cliente>> updateClienteById(Long clienteId, @RequestBody Cliente clienteAtt){
-           List<Cliente> clientes = clientesServ.atualizarPorId(clienteId, clienteAtt);
+        public ResponseEntity<List<Clientes>> updateClienteById(Long clienteId, @RequestBody Clientes clienteAtt){
+           List<Clientes> clientes = clientesServ.atualizarPorId(clienteId, clienteAtt);
+           return ResponseEntity.ok(clientes);
 
-           return ResponseEntity.ok("Cliente atualizado com sucesos! " + clienteAtt);
+
+
         }
 
 

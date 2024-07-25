@@ -33,8 +33,7 @@ public class Agendamento {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
-
+    private Clientes cliente;
 
 
     @ManyToMany
@@ -44,4 +43,15 @@ public class Agendamento {
             inverseJoinColumns = @JoinColumn(name = "servico_id")
     )
     private List<Servico> servicos = new ArrayList<>();
+
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "funcionario_agendamento",
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "funcionario_id")
+    )
+        private List<Funcionario> funcionarios = new ArrayList<>();
+
 }

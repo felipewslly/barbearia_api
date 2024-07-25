@@ -6,6 +6,7 @@ import br.com.barbearia_api.model.entity.Servico;
 import br.com.barbearia_api.repository.AgendamentoRepo;
 import br.com.barbearia_api.repository.ClienteRepo;
 import br.com.barbearia_api.repository.ServicoRepo;
+import br.com.barbearia_api.services.servicesint.AgendamentoServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendamentoServ implements AgendamentoServices{
+public class AgendamentoServ implements AgendamentoServices {
 
     private ServicoRepo serviceRepo;
     private AgendamentoRepo agendamentoRepo;
