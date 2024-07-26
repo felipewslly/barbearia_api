@@ -13,33 +13,33 @@ import java.util.List;
 import java.util.ListIterator;
 
 @RestController
-@RequestMapping("api/barbearia/")
+@RequestMapping("barbearia/agendamentos")
 public class AgendamentoController extends AgendamentoServ{
 
     @Autowired
     private AgendamentoServ agendamentoServ;
 
-    @PostMapping("/agendamentos")
+    @PostMapping()
     ResponseEntity<Agendamento> createSchedule(@RequestBody Agendamento agendamento){
         Agendamento createSchedule = agendamentoServ.criarAgendamento(agendamento);
         return ResponseEntity.created(URI.create("/agendamentos" + createSchedule.getId())).body(createSchedule);
     }
 
-    @GetMapping("/agendamentos")
+    @GetMapping()
     ResponseEntity<List<Agendamento>> allSchedule(){
         List<Agendamento> allSchedule = agendamentoServ.todosAgendamentos();
 
         return ResponseEntity.ok(allSchedule);
     }
 
-    @PutMapping("/agendamentos/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<Agendamento> updateScheduleById(@PathVariable Long id, @RequestBody Agendamento agendamentoAtt){
             Agendamento updateScheduleById = agendamentoServ.atualizarAgendamento(id, agendamentoAtt);
 
             return ResponseEntity.ok(updateScheduleById);
     }
 
-    @DeleteMapping("/agendamento/{id)")
+    @DeleteMapping("/{id}")
     ResponseEntity<List<Agendamento>> deleteScheduleById(@PathVariable Long id){
         List<Agendamento> deleteScheduleById = agendamentoServ.removerAgendamentoPorId(id);
             if (deleteScheduleById == null || deleteScheduleById.isEmpty()){
@@ -47,7 +47,7 @@ public class AgendamentoController extends AgendamentoServ{
             }
             return ResponseEntity.ok(deleteScheduleById);
     }
-    @GetMapping("/agendamento/data")
+    @GetMapping("/data")
     ResponseEntity<List<Agendamento>> findScheduleByDate(LocalDate data){
         List<Agendamento> findScheduleByDate = agendamentoServ.agendamentoPorData(data);
             if (findScheduleByDate == null || findScheduleByDate.isEmpty()){
@@ -56,7 +56,7 @@ public class AgendamentoController extends AgendamentoServ{
          return ResponseEntity.ok(findScheduleByDate);
     }
 
-    @GetMapping("/agendamento/cliente/{id}")
+    @GetMapping("/cliente/{id}")
     ResponseEntity<List<Agendamento>> findByClientId(@PathVariable Long id){
         List<Agendamento> findByClientId = agendamentoServ.agendamentoPorCliente(id);
             if (findByClientId == null || findByClientId.isEmpty()){
@@ -65,7 +65,7 @@ public class AgendamentoController extends AgendamentoServ{
             return ResponseEntity.ok(findByClientId);
     }
 
-    @GetMapping("/agendamento/servico/{id}")
+    @GetMapping("/servico/{id}")
     ResponseEntity<List<Agendamento>> findByServiceId(@PathVariable Long id){
         List<Agendamento> findByServiceId = agendamentoServ.agendamentoPorServicos(id);
 

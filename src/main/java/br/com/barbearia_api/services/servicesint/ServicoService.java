@@ -2,20 +2,20 @@ package br.com.barbearia_api.services.servicesint;
 
 import br.com.barbearia_api.model.entity.Servico;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ServicoService {
 
-    Servico registrarServico(String corte, String preco);
+    Servico registrarServico(Servico servico);
 
-    Servico atualizarServicoPorId(Long servicoId, LocalDate novaData, LocalTime novaHora, String novoCorte, String novoPreco);
+    Optional<Servico> atualizarServicoPorId(Long id, Servico servicoAtt);
 
     List<Servico> todosServicos();
 
-    List<Servico> removerServicoPorId(Long servicoId);
+    void removerServicoPorId(Long servicoId);
 
+    Optional<Servico> servicoPorId(Long id);
 
 
 

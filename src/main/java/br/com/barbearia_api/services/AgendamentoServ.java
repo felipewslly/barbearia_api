@@ -88,7 +88,7 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public List<Agendamento> agendamentoPorData(LocalDate data) {
-        List<Agendamento> agendamentos = agendamentoRepo.findByDate(data);
+        List<Agendamento> agendamentos = agendamentoRepo.findByData(data);
             if (agendamentos.isEmpty()){
                 throw new IllegalArgumentException("DATA NÃO REGISTRADA");
             }
@@ -96,8 +96,8 @@ public class AgendamentoServ implements AgendamentoServices {
     }
 
     @Override
-    public List<Agendamento> agendamentoPorCliente(Long clienteId) {
-        List<Agendamento> clienteAgendado = agendamentoRepo.findByClientId(clienteId);
+    public List<Agendamento> agendamentoPorCliente(Long cliente) {
+        List<Agendamento> clienteAgendado = agendamentoRepo.findByCliente_Id(cliente);
             if (clienteAgendado.isEmpty()){
                 throw new RuntimeException("ID DO CLIENTE NÃO ENCONTRADO");
             }
@@ -106,7 +106,7 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public List<Agendamento> agendamentoPorServicos(Long servicoId) {
-        List<Agendamento> agendamentoPorServico = agendamentoRepo.findByServiceId(servicoId);
+        List<Agendamento> agendamentoPorServico = agendamentoRepo.findByServicosId(servicoId);
 
             if (agendamentoPorServico.isEmpty()){
                 throw new RuntimeException("ID DO SERVIÇO NÃO ENCONTRADO");

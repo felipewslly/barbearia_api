@@ -42,28 +42,24 @@ public class ClientesServ implements ClienteServices {
     @Override
     public List<Clientes> todosClientes() {
         List<Clientes> clientes = clienteRepo.findAll();
-            if (clientes.isEmpty()){
-                throw new RuntimeException("LISTA VAZIA");
-            }
+            return clientes;
 
-        return clientes;
     }
 
     @Override
-    public Clientes deletarClienteId(Long clienteId) {
+    public List<Clientes> deletarClienteId(Long id) {
         try{
-            if (!clienteRepo.existsById(clienteId)){
+            if (!clienteRepo.existsById(id)){
                 throw new IllegalArgumentException("ID do cliente não encontrado");
             }
-                clienteRepo.deleteById(clienteId);
+                clienteRepo.deleteById(id);
         }catch(IllegalArgumentException e){
             throw e;
         }catch (Exception e){
             throw new RuntimeException("Erro ao excluir o usuario", e);
         }
 
-        return (Clientes) clienteRepo.findAll();
-
+        return clienteRepo.findAll();
 
     }
 

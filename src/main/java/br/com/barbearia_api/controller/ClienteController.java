@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/barbearia/")
+@RequestMapping("barbearia/clientes")
 public class ClienteController extends ClientesServ {
 
         @Autowired
@@ -27,27 +27,28 @@ public class ClienteController extends ClientesServ {
             return new ResponseEntity<>(cliente, HttpStatus.CREATED);
         }
 
-        @GetMapping("/clientes/{id}")
-        public ResponseEntity<Clientes> findClienteById(Long clienteId){
-            Clientes cliente = clientesServ.clientePorId(clienteId);
+        @GetMapping("/{id}")
+        public ResponseEntity<Clientes> findClienteById(@PathVariable Long id){
+            Clientes cliente = clientesServ.clientePorId(id);
             return ResponseEntity.ok(cliente);
         }
 
-        @GetMapping("/clientes")
+        @GetMapping()
         public ResponseEntity<List<Clientes>> allClientes(){
             List<Clientes> cliente = clientesServ.todosClientes();
                 return ResponseEntity.ok(cliente);
         }
 
-        @DeleteMapping("/clientes/{id}")
-        public ResponseEntity<String> deleteClienteById(Long clienteId){
-            clientesServ.deletarClienteId(clienteId);
-            return ResponseEntity.ok("Cliente deletado com sucesso");
+        @DeleteMapping("/{id}")
+        public ResponseEntity<List<Clientes>> deleteClienteById(@PathVariable Long id){
+           List<Clientes> clientesAtt =  clientesServ.deletarClienteId(id);
+           List<Clientes> clientesTotais = clientesServ.todosClientes();
+            return ResponseEntity.ok(clientesTotais);
         }
 
-        @PutMapping("/clientes/{id}")
-        public ResponseEntity<List<Clientes>> updateClienteById(Long clienteId, @RequestBody Clientes clienteAtt){
-           List<Clientes> clientes = clientesServ.atualizarPorId(clienteId, clienteAtt);
+        @PutMapping("/{id}")
+        public ResponseEntity<List<Clientes>> updateClienteById(@PathVariable Long id, @RequestBody Clientes clienteAtt){
+           List<Clientes> clientes = clientesServ.atualizarPorId(id, clienteAtt);
            return ResponseEntity.ok(clientes);
         }
 
