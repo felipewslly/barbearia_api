@@ -15,6 +15,7 @@ import java.util.Optional;
 @Service
 public class ServiceServ implements ServicoService {
 
+    @Autowired
     private ServicoRepo servicoRepo;
 
     @Override
@@ -22,8 +23,8 @@ public class ServiceServ implements ServicoService {
         Servico servico1 = new Servico();
         servico1.setPreco(servico.getPreco());
         servico1.setCorte(servico.getCorte());
-        servicoRepo.save(servico);
-        return servico;
+        servicoRepo.save(servico1);
+        return servico1;
     }
     @Override
     public Optional<Servico> atualizarServicoPorId(Long servicoId, Servico servicoAtt){

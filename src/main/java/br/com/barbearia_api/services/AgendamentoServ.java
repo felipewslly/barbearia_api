@@ -9,6 +9,7 @@ import br.com.barbearia_api.repository.ServicoRepo;
 import br.com.barbearia_api.services.servicesint.AgendamentoServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,9 +24,13 @@ import java.util.Optional;
 @NoArgsConstructor
 public class AgendamentoServ implements AgendamentoServices {
 
+    @Autowired
     private ServicoRepo serviceRepo;
+    @Autowired
     private AgendamentoRepo agendamentoRepo;
+    @Autowired
     private ClienteRepo clienteRepo;
+
     @Override
     public Agendamento criarAgendamento(Agendamento agendamento) {
         if (agendamento.getData() == null || agendamento.getHora() == null ||

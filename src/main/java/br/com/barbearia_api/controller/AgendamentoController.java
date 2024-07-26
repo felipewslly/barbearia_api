@@ -56,7 +56,7 @@ public class AgendamentoController extends AgendamentoServ{
          return ResponseEntity.ok(findScheduleByDate);
     }
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/clientes/{id}")
     ResponseEntity<List<Agendamento>> findByClientId(@PathVariable Long id){
         List<Agendamento> findByClientId = agendamentoServ.agendamentoPorCliente(id);
             if (findByClientId == null || findByClientId.isEmpty()){
@@ -65,7 +65,7 @@ public class AgendamentoController extends AgendamentoServ{
             return ResponseEntity.ok(findByClientId);
     }
 
-    @GetMapping("/servico/{id}")
+    @GetMapping("/servicos/{id}")
     ResponseEntity<List<Agendamento>> findByServiceId(@PathVariable Long id){
         List<Agendamento> findByServiceId = agendamentoServ.agendamentoPorServicos(id);
 
