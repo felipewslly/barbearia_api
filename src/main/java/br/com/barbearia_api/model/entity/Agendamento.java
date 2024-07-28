@@ -9,8 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -36,6 +35,14 @@ public class Agendamento {
     private Clientes cliente;
 
 
+    @JoinColumn(name = "funcionario_id")
+    private Funcionario funcionarios;
+
+    @JoinColumn(name = "servico_id")
+    private Servico servico;
+
+
+
     @ManyToMany
     @JoinTable(
             name = "agendamento_servico",
@@ -52,6 +59,6 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "funcionario_id")
     )
-        private List<Funcionario> funcionarios = new ArrayList<>();
+        private List<Funcionario> funcionariosList = new ArrayList<>();
 
 }

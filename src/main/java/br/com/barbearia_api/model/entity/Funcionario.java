@@ -25,16 +25,16 @@ public class Funcionario {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "cargo", nullable = false)
+    @Column(name = "cargo")
     private String cargo;
 
-    @Column(name = "telefone", nullable = false)
+    @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "endereco", nullable = false)
+    @Column(name = "endereco")
     private String endereco;
 
     @Column(name = "data-de-contratacao")

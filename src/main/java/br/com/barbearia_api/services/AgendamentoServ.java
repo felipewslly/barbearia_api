@@ -2,9 +2,11 @@ package br.com.barbearia_api.services;
 
 import br.com.barbearia_api.model.entity.Agendamento;
 import br.com.barbearia_api.model.entity.Clientes;
+import br.com.barbearia_api.model.entity.Funcionario;
 import br.com.barbearia_api.model.entity.Servico;
 import br.com.barbearia_api.repository.AgendamentoRepo;
 import br.com.barbearia_api.repository.ClienteRepo;
+import br.com.barbearia_api.repository.FuncionarioRepo;
 import br.com.barbearia_api.repository.ServicoRepo;
 import br.com.barbearia_api.services.servicesint.AgendamentoServices;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -25,6 +28,8 @@ import java.util.Optional;
 public class AgendamentoServ implements AgendamentoServices {
 
     @Autowired
+    private FuncionarioRepo funcionarioRepo;
+    @Autowired
     private ServicoRepo serviceRepo;
     @Autowired
     private AgendamentoRepo agendamentoRepo;
@@ -32,20 +37,24 @@ public class AgendamentoServ implements AgendamentoServices {
     private ClienteRepo clienteRepo;
 
     @Override
-    public Agendamento criarAgendamento(Agendamento agendamento) {
-        if (agendamento.getData() == null || agendamento.getHora() == null ||
-            agendamento.getCliente() == null || agendamento.getServicos() == null){
-            throw new IllegalArgumentException("Parâmetros não podem estar vazios");
-        }
+    public Agendamento criarAgendamento(Agendamento request) {
+        Clientes cliente = clienteRepo.findById(request.getCliente().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
-        Clientes cliente = clienteRepo.findById(agendamento.getCliente().getId()).orElseThrow(
-                () -> new IllegalArgumentException("Cliente não encontrado"));
+        Funcionario funcionario = funcionarioRepo.findById(request.getFuncionarios().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado"));
 
-        for (Servico service : agendamento.getServicos()){
-            serviceRepo.findById(service.getId()).orElseThrow(
-                    () -> new IllegalArgumentException("Serviço nao encontrado"));
-        }
+        Servico servico = serviceRepo.findById(request.getServicos().get())
+                .orElseThrow(() -> new IllegalArgumentException("Serviço não encontrado"));
+
+        // Criar um novo agendamento
+        Agendamento agendamento = new Agendamento();
+        agendamento.setData(request.getData());
+        agendamento.setHora(request.getHora());
         agendamento.setCliente(cliente);
+        agendamento.setFuncionarios(funcionario);
+        agendamento.setServicos(servico);
+
         return agendamentoRepo.save(agendamento);
     }
 

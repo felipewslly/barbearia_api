@@ -17,40 +17,40 @@ import java.util.List;
 @RequestMapping("barbearia/clientes")
 public class ClienteController extends ClientesServ {
 
-        @Autowired
-        private ClientesServ clientesServ;
+    @Autowired
+    private ClientesServ clientesServ;
 
 
-        @PostMapping(consumes = "application/json", produces = "application/json")
-        public ResponseEntity<Clientes> createCliente(@RequestBody Clientes clienteId){
-            Clientes cliente = clientesServ.criarCliente(clienteId);
-            return new ResponseEntity<>(cliente, HttpStatus.CREATED);
-        }
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Clientes> createCliente(@RequestBody Clientes clienteId){
+        Clientes cliente = clientesServ.criarCliente(clienteId);
+        return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+    }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<Clientes> findClienteById(@PathVariable Long id){
-            Clientes cliente = clientesServ.clientePorId(id);
-            return ResponseEntity.ok(cliente);
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<Clientes> findClienteById(@PathVariable Long id){
+        Clientes cliente = clientesServ.clientePorId(id);
+        return ResponseEntity.ok(cliente);
+    }
 
-        @GetMapping()
-        public ResponseEntity<List<Clientes>> allClientes(){
-            List<Clientes> cliente = clientesServ.todosClientes();
-                return ResponseEntity.ok(cliente);
-        }
+    @GetMapping()
+    public ResponseEntity<List<Clientes>> allClientes(){
+        List<Clientes> cliente = clientesServ.todosClientes();
+        return ResponseEntity.ok(cliente);
+    }
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<List<Clientes>> deleteClienteById(@PathVariable Long id){
-           List<Clientes> clientesAtt =  clientesServ.deletarClienteId(id);
-           List<Clientes> clientesTotais = clientesServ.todosClientes();
-            return ResponseEntity.ok(clientesTotais);
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<Clientes>> deleteClienteById(@PathVariable Long id){
+        List<Clientes> clientesAtt =  clientesServ.deletarClienteId(id);
+        List<Clientes> clientesTotais = clientesServ.todosClientes();
+        return ResponseEntity.ok(clientesTotais);
+    }
 
-        @PutMapping("/{id}")
-        public ResponseEntity<List<Clientes>> updateClienteById(@PathVariable Long id, @RequestBody Clientes clienteAtt){
-           List<Clientes> clientes = clientesServ.atualizarPorId(id, clienteAtt);
-           return ResponseEntity.ok(clientes);
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<List<Clientes>> updateClienteById(@PathVariable Long id, @RequestBody Clientes clienteAtt){
+        List<Clientes> clientes = clientesServ.atualizarPorId(id, clienteAtt);
+        return ResponseEntity.ok(clientes);
+    }
 
 
 }
