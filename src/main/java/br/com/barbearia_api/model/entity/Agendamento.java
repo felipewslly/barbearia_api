@@ -38,7 +38,7 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id",referencedColumnName = "id")
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "agendamentos")
     private List<Clientes> clientes;
 
     @ManyToMany
@@ -47,7 +47,7 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "servico_id", referencedColumnName = "id")
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "agendamentos")
     private List<Servico> servicos;
 
 
@@ -58,7 +58,7 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "agendamentos")
         private List<Funcionario> funcionarios;
 
 }

@@ -23,7 +23,7 @@ public class AgendamentoController extends AgendamentoServ{
     @Autowired
     private AgendamentoServ agendamentoServ;
 
-    @PostMapping()
+    @PostMapping(consumes = "application/json", produces = "application/json")
     ResponseEntity<Agendamento> createSchedule(@RequestBody Agendamento agendamento){
         Agendamento createSchedule = agendamentoServ.criarAgendamento(agendamento);
         return ResponseEntity.created(URI.create("/agendamentos" + createSchedule.getId())).body(createSchedule);

@@ -42,6 +42,6 @@ public class Funcionario {
     private LocalDate dataDeContratacao;
 
     @ManyToMany(mappedBy = "funcionarios")
-    @JsonBackReference
+    @JsonBackReference(value = "agendamentos")
     private List<Agendamento> agendamentos = new ArrayList<>();
 }

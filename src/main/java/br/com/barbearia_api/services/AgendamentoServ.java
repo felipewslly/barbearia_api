@@ -39,7 +39,7 @@ public class AgendamentoServ implements AgendamentoServices {
     @Override
     public Agendamento criarAgendamento(Agendamento request) {
        List<Clientes> clientes = new ArrayList<>();
-        for (Long id : request.getCliente().stream().map(Clientes::getId).toList()) {
+        for (Long id : request.getClientes().stream().map(Clientes::getId).toList()) {
             Optional<Clientes> cliente = clienteRepo.findById(id);
             cliente.ifPresent(clientes::add);
         }
@@ -58,7 +58,7 @@ public class AgendamentoServ implements AgendamentoServices {
             agendamento.setHora(LocalTime.from(request.getHora()));
             agendamento.setServicos(servicos);
             agendamento.setFuncionarios(funcionarios);
-            agendamento.setCliente(clientes);
+            agendamento.setClientes(clientes);
             return agendamentoRepo.save(agendamento);
             }
 
@@ -74,11 +74,11 @@ public class AgendamentoServ implements AgendamentoServices {
         agendamento.setHora(agendamentoAtt.getHora());
 
         List<Clientes> clientesAtt = new ArrayList<>();
-            for (Long id : agendamentoAtt.getCliente().stream().map(Clientes::getId).toList()) {
+            for (Long id : agendamentoAtt.getClientes().stream().map(Clientes::getId).toList()) {
                 Optional<Clientes> cliente = clienteRepo.findById(id);
                 cliente.ifPresent(clientesAtt::add);
             }
-        agendamento.setCliente(clientesAtt);
+        agendamento.setClientes(clientesAtt);
 
         List<Funcionario> funcionariosAtt = new ArrayList<>();
             for (Long id : agendamentoAtt.getFuncionarios().stream().map(Funcionario::getId).toList()) {
@@ -138,7 +138,7 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public List<Agendamento> agendamentoPorCliente(Long cliente) {
-        List<Agendamento> clienteAgendado = agendamentoRepo.findByCliente_Id(cliente);
+        List<Agendamento> clienteAgendado = agendamentoRepo.findByClientes_Id(cliente);
             if (clienteAgendado.isEmpty()){
                 throw new RuntimeException("ID DO CLIENTE NÃO ENCONTRADO");
             }

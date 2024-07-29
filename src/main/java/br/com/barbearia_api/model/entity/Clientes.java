@@ -35,8 +35,8 @@ public class Clientes {
     @Column(name = "endereço",nullable = false )
     private String endereco;
 
-    @ManyToMany(mappedBy = "cliente")
-    @JsonBackReference
+    @ManyToMany(mappedBy = "clientes")
+    @JsonBackReference(value = "agendamentos")
     private List<Agendamento> agendametos = new ArrayList<>();
 
 

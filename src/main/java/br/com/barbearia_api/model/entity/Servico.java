@@ -30,7 +30,7 @@ public class Servico {
     private String preco;
 
     @ManyToMany(mappedBy = "servicos")
-    @JsonBackReference
+    @JsonBackReference(value = "agendamentos")
     private List<Agendamento> agendamentos = new ArrayList<>();
 
 
