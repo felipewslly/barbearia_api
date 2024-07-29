@@ -38,34 +38,61 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Override
     public Agendamento criarAgendamento(Agendamento request) {
-        Clientes cliente = clienteRepo.findById(request.getCliente().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+       List<Clientes> clientes = new ArrayList<>();
+        for (Long id : request.getCliente().stream().map(Clientes::getId).toList()) {
+            Optional<Clientes> cliente = clienteRepo.findById(id);
+            cliente.ifPresent(clientes::add);
+        }
+        List<Funcionario> funcionarios = new ArrayList<>();
+            for (Long id : request.getFuncionarios().stream().map(Funcionario::getId).toList()) {
+                Optional<Funcionario> funcionario = funcionarioRepo.findById(id);
+                funcionario.ifPresent(funcionarios::add);
+            }
+            List<Servico> servicos = new ArrayList<>();
+            for (Long id : request.getServicos().stream().map(Servico::getId).toList()) {
+                Optional<Servico> servico = serviceRepo.findById(id);
+                servico.ifPresent(servicos::add);
+            }
+            Agendamento agendamento = new Agendamento();
+            agendamento.setData(LocalDate.from(request.getData()));
+            agendamento.setHora(LocalTime.from(request.getHora()));
+            agendamento.setServicos(servicos);
+            agendamento.setFuncionarios(funcionarios);
+            agendamento.setCliente(clientes);
+            return agendamentoRepo.save(agendamento);
+            }
 
-        Funcionario funcionario = funcionarioRepo.findById(request.getFuncionarios().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado"));
-
-        Servico servico = serviceRepo.findById(request.getServicos().get())
-                .orElseThrow(() -> new IllegalArgumentException("Serviço não encontrado"));
-
-        // Criar um novo agendamento
-        Agendamento agendamento = new Agendamento();
-        agendamento.setData(request.getData());
-        agendamento.setHora(request.getHora());
-        agendamento.setCliente(cliente);
-        agendamento.setFuncionarios(funcionario);
-        agendamento.setServicos(servico);
-
-        return agendamentoRepo.save(agendamento);
-    }
 
     @Override
     public Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
         Agendamento agendamento = agendamentoRepo.findById(agendamentoId).orElseThrow(
-                () -> new IllegalArgumentException("Agendamento não existe"));
-        agendamento.setData(LocalDate.from(agendamento.getData()));
-        agendamento.setHora(LocalTime.from(agendamento.getHora()));
-        agendamento.setServicos(agendamento.getServicos());
-        agendamento.setFuncionarios(agendamento.getFuncionarios());
+                ()-> new IllegalArgumentException("ID DO AGENDAMENTO NÃO EXISTE")
+
+        );
+
+        agendamento.setData(agendamentoAtt.getData());
+        agendamento.setHora(agendamentoAtt.getHora());
+
+        List<Clientes> clientesAtt = new ArrayList<>();
+            for (Long id : agendamentoAtt.getCliente().stream().map(Clientes::getId).toList()) {
+                Optional<Clientes> cliente = clienteRepo.findById(id);
+                cliente.ifPresent(clientesAtt::add);
+            }
+        agendamento.setCliente(clientesAtt);
+
+        List<Funcionario> funcionariosAtt = new ArrayList<>();
+            for (Long id : agendamentoAtt.getFuncionarios().stream().map(Funcionario::getId).toList()) {
+                Optional<Funcionario> funcionario = funcionarioRepo.findById(id);
+                funcionario.ifPresent(funcionariosAtt::add);
+            }
+        agendamento.setFuncionarios(funcionariosAtt);
+
+        List<Servico> servicosAtt = new ArrayList<>();
+            for (Long id : agendamentoAtt.getServicos().stream().map(Servico::getId).toList()) {
+                Optional<Servico> servico = serviceRepo.findById(id);
+                servico.ifPresent(servicosAtt::add);
+            }
+        agendamento.setServicos(servicosAtt);
 
         return agendamentoRepo.save(agendamento);
 

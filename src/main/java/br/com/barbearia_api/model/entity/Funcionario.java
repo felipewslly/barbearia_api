@@ -1,20 +1,21 @@
 package br.com.barbearia_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "funcionarios")
 public class Funcionario {
 
@@ -22,7 +23,7 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome")
     private String nome;
 
     @Column(name = "cargo")
@@ -37,9 +38,10 @@ public class Funcionario {
     @Column(name = "endereco")
     private String endereco;
 
-    @Column(name = "data-de-contratacao")
+    @Column(name = "datade_contratacao")
     private LocalDate dataDeContratacao;
 
     @ManyToMany(mappedBy = "funcionarios")
+    @JsonBackReference
     private List<Agendamento> agendamentos = new ArrayList<>();
 }

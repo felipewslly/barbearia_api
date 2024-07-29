@@ -1,6 +1,7 @@
 package br.com.barbearia_api.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Servico {
     private String preco;
 
     @ManyToMany(mappedBy = "servicos")
+    @JsonBackReference
     private List<Agendamento> agendamentos = new ArrayList<>();
 
 
