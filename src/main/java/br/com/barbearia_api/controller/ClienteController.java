@@ -15,16 +15,16 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("barbearia/clientes")
-public class ClienteController extends ClientesServ {
+public class ClienteController{
 
     @Autowired
     private ClientesServ clientesServ;
 
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Clientes> createCliente(@RequestBody Clientes clienteId){
-        Clientes cliente = clientesServ.criarCliente(clienteId);
-        return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+    public ResponseEntity<Clientes> createCliente(@RequestBody Clientes cliente){
+        Clientes newCliente = clientesServ.criarCliente(cliente);
+        return new ResponseEntity<>(newCliente, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

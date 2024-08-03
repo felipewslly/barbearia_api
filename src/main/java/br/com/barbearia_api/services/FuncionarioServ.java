@@ -6,9 +6,11 @@ import br.com.barbearia_api.repository.FuncionarioRepo;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.TenantId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -18,7 +20,10 @@ public class FuncionarioServ implements FuncionarioServices {
 
     @Autowired
     private FuncionarioRepo funcionarioRepo;
+
+
     @Override
+    @Transactional
     public Funcionario criarFuncionario(Funcionario funcionario) {
         try {
             // Validação dos campos do funcionário
@@ -64,6 +69,7 @@ public class FuncionarioServ implements FuncionarioServices {
     }
 
     @Override
+    @Transactional
     public Funcionario deletarFuncionarioId(Long funcionarioId) {
         try{
             Funcionario deleteFuncionarioById = funcionarioRepo.findById(funcionarioId).orElseThrow(
@@ -77,6 +83,7 @@ public class FuncionarioServ implements FuncionarioServices {
     }
 
     @Override
+    @Transactional
     public Funcionario atualizarPorId(Long funcionarioId, Funcionario funcionarioAtt) {
         try{
             Funcionario funcionario = funcionarioRepo.findById(funcionarioId).orElseThrow(

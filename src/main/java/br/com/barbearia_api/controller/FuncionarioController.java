@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @RestController
 @RequestMapping("barbearia/funcionarios")
-public class FuncionarioController extends FuncionarioServ {
+public class FuncionarioController{
 
     @Autowired
     private FuncionarioServices funcionarioServices;

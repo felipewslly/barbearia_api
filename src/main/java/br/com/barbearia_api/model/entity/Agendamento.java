@@ -1,6 +1,7 @@
 package br.com.barbearia_api.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,33 +33,34 @@ public class Agendamento {
     @Column(name = "hora", nullable = false)
     private LocalTime hora;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "agendamento_cliente",
-            joinColumns = @JoinColumn(name = "agendamento_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "cliente_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "cliente_id")
     )
-    @JsonManagedReference(value = "agendamentos")
-    private List<Clientes> clientes;
+    @JsonBackReference
+    private List<Clientes> clientes = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "agendamento_servico",
-            joinColumns = @JoinColumn(name = "agendamento_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "servico_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "servico_id")
     )
-    @JsonManagedReference(value = "agendamentos")
-    private List<Servico> servicos;
+
+    @JsonBackReference
+    private List<Servico> servicos = new ArrayList<>();
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "funcionario_agendamento",
-            joinColumns = @JoinColumn(name = "agendamento_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "funcionario_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "funcionario_id")
     )
-    @JsonManagedReference(value = "agendamentos")
-        private List<Funcionario> funcionarios;
+        @JsonBackReference
+        private List<Funcionario> funcionarios = new ArrayList<>();
 
 }

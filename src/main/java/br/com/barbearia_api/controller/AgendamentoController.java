@@ -1,5 +1,6 @@
 package br.com.barbearia_api.controller;
 
+import br.com.barbearia_api.dto.AgendamentoDTO;
 import br.com.barbearia_api.model.entity.Agendamento;
 import br.com.barbearia_api.services.AgendamentoServ;
 import lombok.AllArgsConstructor;
@@ -17,21 +18,21 @@ import java.util.ListIterator;
 @AllArgsConstructor
 @NoArgsConstructor
 @RestController
-@RequestMapping("barbearia/agendamentos")
-public class AgendamentoController extends AgendamentoServ{
+@RequestMapping("/barbearia/agendamentos")
+public class AgendamentoController{
 
     @Autowired
     private AgendamentoServ agendamentoServ;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    ResponseEntity<Agendamento> createSchedule(@RequestBody Agendamento agendamento){
-        Agendamento createSchedule = agendamentoServ.criarAgendamento(agendamento);
-        return ResponseEntity.created(URI.create("/agendamentos" + createSchedule.getId())).body(createSchedule);
+    ResponseEntity<AgendamentoDTO> createSchedule(@RequestBody AgendamentoDTO agendamentoDTO){
+        AgendamentoDTO createSchedule = agendamentoServ.criarAgendamento(agendamentoDTO);
+        return ResponseEntity.ok(createSchedule);
     }
 
     @GetMapping()
-    ResponseEntity<List<Agendamento>> allSchedule(){
-        List<Agendamento> allSchedule = agendamentoServ.todosAgendamentos();
+    ResponseEntity<List<AgendamentoDTO>> allSchedule(){
+        List<AgendamentoDTO> allSchedule = agendamentoServ.todosAgendamentos();
 
         return ResponseEntity.ok(allSchedule);
     }

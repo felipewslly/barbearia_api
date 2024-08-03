@@ -2,6 +2,7 @@ package br.com.barbearia_api.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "servicos")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Table(name = "servicos")
 public class Servico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +30,8 @@ public class Servico {
     @Column(name = "preco", nullable = false)
     private String preco;
 
-    @ManyToMany(mappedBy = "servicos")
-    @JsonBackReference(value = "agendamentos")
+    @ManyToMany(mappedBy = "servicos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     private List<Agendamento> agendamentos = new ArrayList<>();
 
 

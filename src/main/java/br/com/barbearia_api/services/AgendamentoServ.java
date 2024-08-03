@@ -1,5 +1,8 @@
 package br.com.barbearia_api.services;
 
+import br.com.barbearia_api.ApiException;
+import br.com.barbearia_api.converter.AgendamentoConverter;
+import br.com.barbearia_api.dto.AgendamentoDTO;
 import br.com.barbearia_api.model.entity.Agendamento;
 import br.com.barbearia_api.model.entity.Clientes;
 import br.com.barbearia_api.model.entity.Funcionario;
@@ -13,13 +16,12 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,77 +31,98 @@ public class AgendamentoServ implements AgendamentoServices {
 
     @Autowired
     private FuncionarioRepo funcionarioRepo;
+
     @Autowired
     private ServicoRepo serviceRepo;
+
     @Autowired
     private AgendamentoRepo agendamentoRepo;
+
     @Autowired
     private ClienteRepo clienteRepo;
 
+
+
+    @Transactional
     @Override
-    public Agendamento criarAgendamento(Agendamento request) {
-       List<Clientes> clientes = new ArrayList<>();
-        for (Long id : request.getClientes().stream().map(Clientes::getId).toList()) {
-            Optional<Clientes> cliente = clienteRepo.findById(id);
-            cliente.ifPresent(clientes::add);
+    public AgendamentoDTO criarAgendamento(AgendamentoDTO request) {
+        Agendamento agendamento = new Agendamento();
+        agendamento.setData(request.getData());
+        agendamento.setHora(request.getHora());
+
+        List<Clientes> clientes = request.getClienteIds().stream()
+                .map(clienteRepo::findById)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+            if(request.getClienteIds() == null){
+                 throw new ApiException("ID NÃO EXISTENTE");
+            }
+        agendamento.setClientes(clientes);
+
+        List<Servico> servicos = request.getServicoIds().stream()
+                .map(serviceRepo::findById)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+        if(request.getServicoIds() == null){
+            throw new ApiException("ID NÃO EXISTENTE");
         }
-        List<Funcionario> funcionarios = new ArrayList<>();
-            for (Long id : request.getFuncionarios().stream().map(Funcionario::getId).toList()) {
-                Optional<Funcionario> funcionario = funcionarioRepo.findById(id);
-                funcionario.ifPresent(funcionarios::add);
-            }
-            List<Servico> servicos = new ArrayList<>();
-            for (Long id : request.getServicos().stream().map(Servico::getId).toList()) {
-                Optional<Servico> servico = serviceRepo.findById(id);
-                servico.ifPresent(servicos::add);
-            }
-            Agendamento agendamento = new Agendamento();
-            agendamento.setData(LocalDate.from(request.getData()));
-            agendamento.setHora(LocalTime.from(request.getHora()));
             agendamento.setServicos(servicos);
+
+        List<Funcionario> funcionarios = request.getFuncionarioIds().stream()
+                .map(funcionarioRepo::findById)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+        if(request.getFuncionarioIds() == null){
+            throw new ApiException("ID NÃO EXISTENTE");
+        }
             agendamento.setFuncionarios(funcionarios);
-            agendamento.setClientes(clientes);
-            return agendamentoRepo.save(agendamento);
-            }
+
+        Agendamento agendamentoSave = agendamentoRepo.save(agendamento);
+        return AgendamentoConverter.paraDTO(agendamentoSave);
+    }
+
+
 
 
     @Override
+    @Transactional
     public Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
-        Agendamento agendamento = agendamentoRepo.findById(agendamentoId).orElseThrow(
-                ()-> new IllegalArgumentException("ID DO AGENDAMENTO NÃO EXISTE")
+        Optional<Agendamento> agendamentoExistente = agendamentoRepo.findById(agendamentoId);
 
-        );
+        if (agendamentoExistente.isPresent()) {
+            Agendamento agendamento = agendamentoExistente.get();
+            List<Clientes> clientesNew = agendamento.getClientes().stream()
+                    .map(Clientes::getId)
+                    .map(clienteRepo::findById)
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
 
-        agendamento.setData(agendamentoAtt.getData());
-        agendamento.setHora(agendamentoAtt.getHora());
-
-        List<Clientes> clientesAtt = new ArrayList<>();
-            for (Long id : agendamentoAtt.getClientes().stream().map(Clientes::getId).toList()) {
-                Optional<Clientes> cliente = clienteRepo.findById(id);
-                cliente.ifPresent(clientesAtt::add);
-            }
-        agendamento.setClientes(clientesAtt);
-
-        List<Funcionario> funcionariosAtt = new ArrayList<>();
-            for (Long id : agendamentoAtt.getFuncionarios().stream().map(Funcionario::getId).toList()) {
-                Optional<Funcionario> funcionario = funcionarioRepo.findById(id);
-                funcionario.ifPresent(funcionariosAtt::add);
-            }
-        agendamento.setFuncionarios(funcionariosAtt);
-
-        List<Servico> servicosAtt = new ArrayList<>();
-            for (Long id : agendamentoAtt.getServicos().stream().map(Servico::getId).toList()) {
-                Optional<Servico> servico = serviceRepo.findById(id);
-                servico.ifPresent(servicosAtt::add);
-            }
-        agendamento.setServicos(servicosAtt);
-
-        return agendamentoRepo.save(agendamento);
+            List<Funcionario> funcionarioNew = agendamento.getFuncionarios().stream()
+                    .map(Funcionario::getId)
+                    .map(funcionarioRepo::findById)
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
 
 
+            List<Servico> servicosNew = agendamento.getServicos().stream()
+                    .map(Servico::getId)
+                    .map(serviceRepo::findById)
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toList());
+
+            agendamento.setData(agendamentoAtt.getData());
+            agendamento.setHora(agendamentoAtt.getHora());
+            agendamento.setClientes(clientesNew);
+            agendamento.setFuncionarios(funcionarioNew);
+            agendamento.setServicos(servicosNew);
+            return agendamentoRepo.save(agendamento);
+        }else{
+            throw new ApiException("AGENDAMENTO NÃO ENCONTRADO");
+        }
     }
 
     @Override
+    @Transactional
     public List<Agendamento> removerAgendamentoPorId(Long agendamentoId) {
                     agendamentoRepo.findAll();
        try{
@@ -119,12 +142,14 @@ public class AgendamentoServ implements AgendamentoServices {
     }
 
     @Override
-    public List<Agendamento> todosAgendamentos() {
+    public List<AgendamentoDTO> todosAgendamentos() {
         List<Agendamento> todosAgendamentos = agendamentoRepo.findAll();
             if (todosAgendamentos.isEmpty()){
                 throw new RuntimeException("LISTA DE AGENDAMENTO VAZIA");
             }
-                return todosAgendamentos;
+                return todosAgendamentos.stream()
+                        .map(AgendamentoConverter::paraDTO)
+                        .collect(Collectors.toList());
     }
 
     @Override

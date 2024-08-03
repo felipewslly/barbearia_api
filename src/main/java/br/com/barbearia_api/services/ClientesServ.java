@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class ClientesServ implements ClienteServices {
     private ClienteRepo clienteRepo;
 
     @Override
+    @Transactional
     public Clientes criarCliente(Clientes cliente) {
         if (cliente == null){
             throw new IllegalArgumentException("O CAMPO NÃO PODE ESTAR VAZIO");
@@ -48,6 +50,7 @@ public class ClientesServ implements ClienteServices {
     }
 
     @Override
+    @Transactional
     public List<Clientes> deletarClienteId(Long id) {
         try{
             if (!clienteRepo.existsById(id)){
@@ -65,6 +68,7 @@ public class ClientesServ implements ClienteServices {
     }
 
     @Override
+    @Transactional
     public List<Clientes> atualizarPorId(Long clienteId, Clientes clienteAtt) {
         Optional<Clientes> clientesIds = clienteRepo.findById(clienteId);
 

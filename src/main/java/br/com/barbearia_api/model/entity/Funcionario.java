@@ -38,10 +38,10 @@ public class Funcionario {
     @Column(name = "endereco")
     private String endereco;
 
-    @Column(name = "datade_contratacao")
+    @Column(name = "data_de_contratacao")
     private LocalDate dataDeContratacao;
 
-    @ManyToMany(mappedBy = "funcionarios")
-    @JsonBackReference(value = "agendamentos")
+    @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     private List<Agendamento> agendamentos = new ArrayList<>();
 }

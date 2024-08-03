@@ -2,6 +2,7 @@ package br.com.barbearia_api.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,17 +27,17 @@ public class Clientes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "telefone", nullable = false)
+    @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "endereço",nullable = false )
+    @Column(name = "endereco")
     private String endereco;
 
-    @ManyToMany(mappedBy = "clientes")
-    @JsonBackReference(value = "agendamentos")
+    @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     private List<Agendamento> agendametos = new ArrayList<>();
 
 
