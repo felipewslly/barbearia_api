@@ -1,12 +1,11 @@
 package br.com.barbearia_api.controller;
 
-import br.com.barbearia_api.model.entity.Servico;
+import br.com.barbearia_api.model.Servico;
 import br.com.barbearia_api.services.ServiceServ;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +32,13 @@ public class ServiceController{
         return ResponseEntity.ok(servicoList);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Servico>> getServicoById(@PathVariable Long id){
         Optional<Servico> servicoById = serviceServ.servicoPorId(id);
         return ResponseEntity.ok(servicoById);
 
     }
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteServiceById(@PathVariable Long id){
         try{
             serviceServ.removerServicoPorId(id);
@@ -51,13 +50,9 @@ public class ServiceController{
 
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Servico> updateServiceById(@PathVariable Long id, @RequestBody Servico newServico){
-        Optional<Servico> servicoAtt = serviceServ.atualizarServicoPorId(id, newServico);
-            if (servicoAtt.isPresent()){
-                return ResponseEntity.ok(servicoAtt.get());
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+        Servico servicoAtt = serviceServ.atualizarServicoPorId(id, newServico);
+            return ResponseEntity.ok(servicoAtt);
     }
 }

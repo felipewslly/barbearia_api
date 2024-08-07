@@ -1,4 +1,4 @@
-package br.com.barbearia_api;
+package br.com.barbearia_api.exception;
 
 
 import org.springframework.http.HttpStatus;

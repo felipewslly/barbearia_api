@@ -1,5 +1,6 @@
 package br.com.barbearia_api.dto;
 
+import br.com.barbearia_api.model.Funcionario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

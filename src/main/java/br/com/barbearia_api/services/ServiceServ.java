@@ -1,5 +1,6 @@
 package br.com.barbearia_api.services;
-import br.com.barbearia_api.model.entity.Servico;
+import br.com.barbearia_api.exception.ApiException;
+import br.com.barbearia_api.model.Servico;
 import br.com.barbearia_api.repository.ServicoRepo;
 import br.com.barbearia_api.services.servicesint.ServicoService;
 import lombok.AllArgsConstructor;
@@ -27,17 +28,13 @@ public class ServiceServ implements ServicoService {
         return servico1;
     }
     @Override
-    public Optional<Servico> atualizarServicoPorId(Long servicoId, Servico servicoAtt){
-        Optional<Servico> newService = servicoRepo.findById(servicoId);
-            if (newService.isPresent()){
-                Servico servico = newService.get();
-                servico.setPreco(servico.getPreco());
-                servico.setCorte(servico.getCorte());
-                servicoRepo.save(servico);
-                return Optional.of(servico);
-            }else {
-                return Optional.empty();
-            }
+    public Servico atualizarServicoPorId(Long servicoId, Servico servicoAtt){
+        Servico servicoById = servicoRepo.findById(servicoId).orElseThrow(
+                () -> new ApiException("ID não encontrado"));
+        servicoById.setCorte(servicoAtt.getCorte());
+        servicoById.setPreco(servicoAtt.getPreco());
+            return servicoRepo.save(servicoById);
+
     }
     @Override
     public List<Servico> todosServicos() {

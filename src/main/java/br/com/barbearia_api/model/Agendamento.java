@@ -1,8 +1,7 @@
-package br.com.barbearia_api.model.entity;
+package br.com.barbearia_api.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +38,7 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id")
     )
-    @JsonBackReference
+    @JsonBackReference(value = "clientes")
     private List<Clientes> clientes = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -49,7 +48,7 @@ public class Agendamento {
             inverseJoinColumns = @JoinColumn(name = "servico_id")
     )
 
-    @JsonBackReference
+    @JsonBackReference(value = "servicos")
     private List<Servico> servicos = new ArrayList<>();
 
 
@@ -60,7 +59,7 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "funcionario_id")
     )
-        @JsonBackReference
+        @JsonBackReference(value = "funcionarios")
         private List<Funcionario> funcionarios = new ArrayList<>();
 
 }

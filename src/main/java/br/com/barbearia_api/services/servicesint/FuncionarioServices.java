@@ -1,6 +1,6 @@
 package br.com.barbearia_api.services.servicesint;
 
-import br.com.barbearia_api.model.entity.Funcionario;
+import br.com.barbearia_api.model.Funcionario;
 
 import java.util.List;
 

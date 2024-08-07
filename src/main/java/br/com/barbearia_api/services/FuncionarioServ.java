@@ -1,12 +1,11 @@
 package br.com.barbearia_api.services;
 
-import br.com.barbearia_api.ApiException;
-import br.com.barbearia_api.model.entity.Funcionario;
+import br.com.barbearia_api.exception.ApiException;
+import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.repository.FuncionarioRepo;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.TenantId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,7 @@
-package br.com.barbearia_api.model.entity;
+package br.com.barbearia_api.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @NoArgsConstructor
@@ -37,7 +34,7 @@ public class Clientes {
     private String endereco;
 
     @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
+    @JsonIgnore
     private List<Agendamento> agendametos = new ArrayList<>();
 
 

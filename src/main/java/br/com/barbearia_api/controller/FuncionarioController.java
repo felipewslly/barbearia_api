@@ -1,7 +1,6 @@
 package br.com.barbearia_api.controller;
 
-import br.com.barbearia_api.model.entity.Funcionario;
-import br.com.barbearia_api.services.FuncionarioServ;
+import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @RestController
 @RequestMapping("barbearia/funcionarios")
-public class FuncionarioController{
+public class FuncionarioController {
 
     @Autowired
     private FuncionarioServices funcionarioServices;
@@ -29,13 +28,26 @@ public class FuncionarioController{
     }
 
     @GetMapping()
-    public ResponseEntity<List<Funcionario>> allEmployees(){
+    public ResponseEntity<List<Funcionario>> allEmployees() {
         List<Funcionario> funcionarios = funcionarioServices.todosFuncionarios();
         return ResponseEntity.ok(funcionarios);
     }
+
     @GetMapping("{id}")
-    public ResponseEntity<Funcionario> findEmployeeById(@PathVariable Long id){
+    public ResponseEntity<Funcionario> findEmployeeById(@PathVariable Long id) {
         Funcionario funcionario = funcionarioServices.funcionarioPorId(id);
+        return ResponseEntity.ok(funcionario);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Funcionario> deleteEmployeeById(@PathVariable Long id) {
+        Funcionario funcionario = funcionarioServices.deletarFuncionarioId(id);
+        return ResponseEntity.ok(funcionario);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Funcionario> updateEmployeeById(@PathVariable Long id, @RequestBody Funcionario UpdatedEmployee) {
+        Funcionario funcionario = funcionarioServices.atualizarPorId(id, UpdatedEmployee);
         return ResponseEntity.ok(funcionario);
     }
 }

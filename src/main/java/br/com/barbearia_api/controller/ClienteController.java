@@ -1,7 +1,7 @@
 package br.com.barbearia_api.controller;
 
 
-import br.com.barbearia_api.model.entity.Clientes;
+import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.services.ClientesServ;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

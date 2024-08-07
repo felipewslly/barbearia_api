@@ -1,7 +1,7 @@
 package br.com.barbearia_api.services.servicesint;
 
 
-import br.com.barbearia_api.model.entity.Clientes;
+import br.com.barbearia_api.model.Clientes;
 
 import java.util.List;
 

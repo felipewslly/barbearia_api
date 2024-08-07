@@ -1,7 +1,7 @@
-package br.com.barbearia_api.model.entity;
+package br.com.barbearia_api.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class Servico {
     private String preco;
 
     @ManyToMany(mappedBy = "servicos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
+    @JsonIgnore
     private List<Agendamento> agendamentos = new ArrayList<>();
 
 

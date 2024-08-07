@@ -1,10 +1,11 @@
 package br.com.barbearia_api.converter;
 
 import br.com.barbearia_api.dto.AgendamentoDTO;
-import br.com.barbearia_api.model.entity.Agendamento;
-import br.com.barbearia_api.model.entity.Clientes;
-import br.com.barbearia_api.model.entity.Funcionario;
-import br.com.barbearia_api.model.entity.Servico;
+import br.com.barbearia_api.model.Agendamento;
+import br.com.barbearia_api.model.Clientes;
+import br.com.barbearia_api.model.Funcionario;
+import br.com.barbearia_api.model.Servico;
+
 
 import java.util.stream.Collectors;
 

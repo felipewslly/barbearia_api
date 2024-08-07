@@ -1,7 +1,7 @@
 package br.com.barbearia_api.services;
 
 
-import br.com.barbearia_api.model.entity.Clientes;
+import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.repository.ClienteRepo;
 import br.com.barbearia_api.services.servicesint.ClienteServices;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
