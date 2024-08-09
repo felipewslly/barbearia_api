@@ -1,5 +1,7 @@
 package br.com.barbearia_api.services;
 
+import br.com.barbearia_api.converter.FuncionarioConverter;
+import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.exception.ApiException;
 import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.repository.FuncionarioRepo;
@@ -21,11 +23,14 @@ public class FuncionarioServ implements FuncionarioServices {
     private FuncionarioRepo funcionarioRepo;
 
 
+    private FuncionarioConverter funcionarioConverter;
+
+
     @Override
     @Transactional
     public Funcionario criarFuncionario(Funcionario funcionario) {
         try {
-            // Validação dos campos do funcionário
+
             if (funcionario == null) {
                 throw new IllegalArgumentException("Nenhum dos campos pode estar vazio.");
             }
@@ -37,24 +42,24 @@ public class FuncionarioServ implements FuncionarioServices {
             func.setEmail(funcionario.getEmail());
             func.setDataDeContratacao(funcionario.getDataDeContratacao());
 
-            // Salvando o funcionário
             return funcionarioRepo.save(func);
 
         } catch (DataIntegrityViolationException e) {
-            // Exceção específica para erros de integridade no banco de dados
+
             throw new IllegalArgumentException("Funcionário já existe: " + e.getMessage());
         } catch (Exception e) {
-            // Captura de outras exceções genéricas
+
             throw new RuntimeException("Erro ao criar funcionário: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public Funcionario funcionarioPorId(Long funcionarioId) {
+    public FuncionarioDTO funcionarioPorId(Long funcionarioId) {
         try{
             Funcionario funcionarioPorId = funcionarioRepo.findById(funcionarioId).orElseThrow(
                     () -> new IllegalArgumentException("Funcionário não encontrado"));
-            return funcionarioPorId;
+            return funcionarioConverter.employeeToDTO(funcionarioPorId);
+
 
         }catch (ApiException e){
             throw new ApiException("Funcionário não encontrado" + e.getMessage());
@@ -62,9 +67,9 @@ public class FuncionarioServ implements FuncionarioServices {
     }
 
     @Override
-    public List<Funcionario> todosFuncionarios() {
+    public List<FuncionarioDTO> todosFuncionarios() {
          List<Funcionario> allFuncionarios = funcionarioRepo.findAll();
-         return allFuncionarios;
+            return funcionarioConverter.employeeListToDTOList(allFuncionarios);
     }
 
     @Override
@@ -95,6 +100,8 @@ public class FuncionarioServ implements FuncionarioServices {
             funcionario.setEndereco(funcionarioAtt.getEndereco());
             funcionario.setTelefone(funcionarioAtt.getTelefone());
             return funcionarioRepo.save(funcionario);
+
+
         }catch (ApiException e){
             throw new ApiException("Funcionário não encontrado" + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package br.com.barbearia_api.services.servicesint;
 
+import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.model.Funcionario;
 
 import java.util.List;
@@ -8,9 +9,9 @@ public interface FuncionarioServices {
 
     Funcionario criarFuncionario(Funcionario funcionario);
 
-    Funcionario funcionarioPorId(Long funcionarioId);
+    FuncionarioDTO funcionarioPorId(Long funcionarioId);
 
-    List<Funcionario> todosFuncionarios();
+    List<FuncionarioDTO> todosFuncionarios();
 
     Funcionario deletarFuncionarioId(Long funcionarioId);
 

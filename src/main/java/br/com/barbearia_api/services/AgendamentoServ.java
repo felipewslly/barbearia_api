@@ -56,19 +56,19 @@ public class AgendamentoServ implements AgendamentoServices {
                 .map(clienteRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
-            agendamento.setClientes(clientes);
+        agendamento.setClientes(clientes);
 
         List<Servico> servicos = request.getServicoIds().stream()
                 .map(serviceRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
-            agendamento.setServicos(servicos);
+        agendamento.setServicos(servicos);
 
         List<Funcionario> funcionarios = request.getFuncionarioIds().stream()
                 .map(funcionarioRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
-            agendamento.setFuncionarios(funcionarios);
+        agendamento.setFuncionarios(funcionarios);
 
         Agendamento agendamentoSave = agendamentoRepo.save(agendamento);
         return AgendamentoConverter.paraDTO(agendamentoSave);
@@ -77,7 +77,7 @@ public class AgendamentoServ implements AgendamentoServices {
     @Transactional
     public AgendamentoDTO atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
         Agendamento agendamentoExistente = agendamentoRepo.findById(agendamentoId).orElseThrow(
-                () -> new ApiException("ID NÃO EXISTENTE"));
+                () -> new ApiException("ID NÃO ENCONTRADO"));
 
             agendamentoExistente.setData(agendamentoAtt.getData());
             agendamentoExistente.setHora(agendamentoAtt.getHora());
@@ -123,7 +123,7 @@ public class AgendamentoServ implements AgendamentoServices {
            if (!agendamentoRepo.existsById(agendamentoId)){
                throw new IllegalArgumentException("ID do agendamento não encontrado");
            }
-            agendamentoRepo.deleteById(agendamentoId);
+                agendamentoRepo.deleteById(agendamentoId);
        }catch(IllegalArgumentException e){
            throw e;
        }catch (Exception e){

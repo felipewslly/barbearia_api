@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +28,37 @@ public class Clientes {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "telefone")
+    @Column(name = "cpf", unique = true)
+    private String cpf;
+
+    @Column(name = "data-de-nascimento")
+    private LocalDate dataDeNascimento;
+
+    @Column(name = "genero")
+    private Character genero;
+
+    @Column(name = "sobrenome")
+    private String sobreNome;
+
+    @Column(name = "idade")
+    private Integer idade;
+
+    @Column(name = "telefone", unique = true)
     private String telefone;
 
     @Column(name = "endereco")
     private String endereco;
 
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @Column(name = "data-de-cadastro")
+    private LocalDate dataDeCadastro;
+
+
     @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Agendamento> agendametos = new ArrayList<>();
+    private List<Agendamento>   agendamentos = new ArrayList<>();
 
 
 }

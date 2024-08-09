@@ -1,5 +1,6 @@
 package br.com.barbearia_api.controller;
 
+import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
 import lombok.AllArgsConstructor;
@@ -23,19 +24,19 @@ public class FuncionarioController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Funcionario> createEmployee(@RequestBody Funcionario funcionario) {
-        Funcionario funcionario1 = funcionarioServices.criarFuncionario(funcionario);
-        return new ResponseEntity<>(funcionario1, HttpStatus.CREATED);
+        Funcionario createEmployees = funcionarioServices.criarFuncionario(funcionario);
+        return new ResponseEntity<>(createEmployees, HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Funcionario>> allEmployees() {
-        List<Funcionario> funcionarios = funcionarioServices.todosFuncionarios();
+    public ResponseEntity<List<FuncionarioDTO>> allEmployees() {
+        List<FuncionarioDTO> funcionarios = funcionarioServices.todosFuncionarios();
         return ResponseEntity.ok(funcionarios);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Funcionario> findEmployeeById(@PathVariable Long id) {
-        Funcionario funcionario = funcionarioServices.funcionarioPorId(id);
+    public ResponseEntity<FuncionarioDTO> findEmployeeById(@PathVariable Long id) {
+        FuncionarioDTO funcionario = funcionarioServices.funcionarioPorId(id);
         return ResponseEntity.ok(funcionario);
     }
 
