@@ -100,9 +100,6 @@ public class AgendamentoServ implements AgendamentoServices {
                   .collect(Collectors.toList());
             agendamentoExistente.setServicos(servicos);
 
-            agendamentoExistente.setClientes(clientes);
-            agendamentoExistente.setFuncionarios(funcionarios);
-            agendamentoExistente.setServicos(servicos);
 
                 return agendamentoRepo.save(agendamentoExistente);
 
