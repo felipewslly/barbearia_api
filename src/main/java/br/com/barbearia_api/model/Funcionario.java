@@ -1,5 +1,6 @@
 package br.com.barbearia_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -42,6 +43,6 @@ public class Funcionario {
     private LocalDate dataDeContratacao;
 
     @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference
     private List<Agendamento> agendamentos = new ArrayList<>();
 }

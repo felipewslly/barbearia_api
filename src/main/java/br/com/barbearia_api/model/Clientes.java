@@ -1,7 +1,9 @@
 package br.com.barbearia_api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,10 +37,7 @@ public class Clientes {
     private LocalDate dataDeNascimento;
 
     @Column(name = "genero")
-    private Character genero;
-
-    @Column(name = "sobrenome")
-    private String sobreNome;
+    private String genero;
 
     @Column(name = "idade")
     private Integer idade;
@@ -57,8 +56,8 @@ public class Clientes {
 
 
     @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Agendamento>   agendamentos = new ArrayList<>();
+    @JsonManagedReference
+    private List<Agendamento> agendamentos = new ArrayList<>();
 
 
 }

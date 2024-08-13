@@ -1,5 +1,6 @@
 package br.com.barbearia_api.controller;
 
+import br.com.barbearia_api.converter.FuncionarioConverter;
 import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
@@ -21,7 +22,6 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioServices funcionarioServices;
 
-
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Funcionario> createEmployee(@RequestBody Funcionario funcionario) {
         Funcionario createEmployees = funcionarioServices.criarFuncionario(funcionario);
@@ -29,26 +29,26 @@ public class FuncionarioController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<FuncionarioDTO>> allEmployees() {
-        List<FuncionarioDTO> funcionarios = funcionarioServices.todosFuncionarios();
-        return ResponseEntity.ok(funcionarios);
+    public ResponseEntity<List<Funcionario>> allEmployees() {
+        List<Funcionario> allEmployee = funcionarioServices.todosFuncionarios();
+        return ResponseEntity.ok(allEmployee);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FuncionarioDTO> findEmployeeById(@PathVariable Long id) {
         FuncionarioDTO funcionario = funcionarioServices.funcionarioPorId(id);
         return ResponseEntity.ok(funcionario);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Funcionario> deleteEmployeeById(@PathVariable Long id) {
         Funcionario funcionario = funcionarioServices.deletarFuncionarioId(id);
         return ResponseEntity.ok(funcionario);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Funcionario> updateEmployeeById(@PathVariable Long id, @RequestBody Funcionario UpdatedEmployee) {
-        Funcionario funcionario = funcionarioServices.atualizarPorId(id, UpdatedEmployee);
+    @PutMapping("/{id}")
+    public ResponseEntity<Funcionario> updateEmployeeById(@PathVariable Long id, @RequestBody Funcionario updatedEmployee) {
+        Funcionario funcionario = funcionarioServices.atualizarPorId(id, updatedEmployee);
         return ResponseEntity.ok(funcionario);
     }
 }

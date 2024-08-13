@@ -1,6 +1,7 @@
 package br.com.barbearia_api.services;
 
 
+import br.com.barbearia_api.converter.ClienteConverter;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.repository.ClienteRepo;
 import br.com.barbearia_api.services.servicesint.ClienteServices;
@@ -24,15 +25,18 @@ public class ClientesServ implements ClienteServices {
     @Override
     @Transactional
     public Clientes criarCliente(Clientes cliente) {
-        if (cliente == null){
-            throw new IllegalArgumentException("O CAMPO NÃO PODE ESTAR VAZIO");
-        }
+
             Clientes cliente1 = new Clientes();
             cliente1.setNome(cliente.getNome());
             cliente1.setEndereco(cliente.getEndereco());
             cliente1.setTelefone(cliente.getTelefone());
-
-               return clienteRepo.save(cliente1);
+            cliente1.setCpf(cliente.getCpf());
+            cliente1.setGenero(cliente.getGenero());
+            cliente1.setDataDeNascimento(cliente.getDataDeNascimento());
+            cliente1.setIdade(cliente.getIdade());
+            cliente1.setEmail(cliente.getEmail());
+            cliente1.setDataDeCadastro(cliente.getDataDeCadastro());
+            return clienteRepo.save(cliente1);
         }
 
     @Override
@@ -73,15 +77,15 @@ public class ClientesServ implements ClienteServices {
 
         if (clientesIds.isPresent()) {
             Clientes clientes = clientesIds.get();
-            if (clienteAtt.getNome() != null) {
-                clientes.setNome(clienteAtt.getNome());
-            }
-            if (clienteAtt.getEndereco() != null) {
-                clientes.setEndereco(clienteAtt.getEndereco());
-            }
-            if (clienteAtt.getTelefone() != null) {
-                clientes.setTelefone(clienteAtt.getTelefone());
-            }
+            clientes.setNome(clienteAtt.getNome());
+            clientes.setCpf(clienteAtt.getCpf());
+            clientes.setGenero(clienteAtt.getGenero());
+            clientes.setTelefone(clienteAtt.getTelefone());
+            clientes.setIdade(clienteAtt.getIdade());
+            clientes.setEmail(clienteAtt.getEmail());
+            clientes.setDataDeCadastro(clienteAtt.getDataDeCadastro());
+            clientes.setDataDeNascimento(clienteAtt.getDataDeNascimento());
+            clientes.setAgendamentos(clienteAtt.getAgendamentos());
             clienteRepo.save(clientes);
         } else {
             throw new RuntimeException("Cliente não encontrado com este ID: " + clientesIds);

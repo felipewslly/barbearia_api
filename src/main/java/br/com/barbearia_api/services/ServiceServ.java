@@ -24,6 +24,7 @@ public class ServiceServ implements ServicoService {
         Servico servico1 = new Servico();
         servico1.setPreco(servico.getPreco());
         servico1.setCorte(servico.getCorte());
+        servico1.setDescricao(servico.getDescricao());
         servicoRepo.save(servico1);
         return servico1;
     }
@@ -33,6 +34,7 @@ public class ServiceServ implements ServicoService {
                 () -> new ApiException("ID não encontrado"));
         servicoById.setCorte(servicoAtt.getCorte());
         servicoById.setPreco(servicoAtt.getPreco());
+        servicoById.setDescricao(servicoAtt.getDescricao());
             return servicoRepo.save(servicoById);
 
     }

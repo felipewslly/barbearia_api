@@ -13,10 +13,9 @@ import java.time.LocalDate;
 public class ClienteDTO {
     private Long id;
     private String nome;
-    private String sobreNome;
     private LocalDate dataDeNascimento;
     private String telefone;
     private Integer idade;
-    private Character genero;
+    private String genero;
 
 }

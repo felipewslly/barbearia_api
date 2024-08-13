@@ -4,17 +4,19 @@ import br.com.barbearia_api.dto.ClienteDTO;
 import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.model.Funcionario;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Component
 public class ClienteConverter {
 
     public ClienteDTO clientToDTO(Clientes clientes){
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setId(clientes.getId());
         clienteDTO.setNome(clientes.getNome());
-        clienteDTO.setSobreNome(clientes.getSobreNome());
         clienteDTO.setTelefone(clientes.getTelefone());
         clienteDTO.setIdade(clientes.getIdade());
         clienteDTO.setGenero(clientes.getGenero());
@@ -27,7 +29,6 @@ public class ClienteConverter {
                     ClienteDTO clienteDTO = new ClienteDTO();
                     clienteDTO.setId(clientes.getId());
                     clienteDTO.setNome(clientes.getNome());
-                    clienteDTO.setSobreNome(clientes.getSobreNome());
                     clienteDTO.setGenero(clientes.getGenero());
                     clienteDTO.setTelefone(clientes.getTelefone());
                     clienteDTO.setDataDeNascimento(clientes.getDataDeNascimento());
@@ -41,7 +42,6 @@ public class ClienteConverter {
         Clientes clientes = new Clientes();
         clientes.setId(clienteDTO.getId());
         clientes.setNome(clienteDTO.getNome());
-        clientes.setSobreNome(clienteDTO.getSobreNome());
         clientes.setGenero(clienteDTO.getGenero());
         clientes.setTelefone(clienteDTO.getTelefone());
         clientes.setDataDeNascimento(clienteDTO.getDataDeNascimento());
@@ -55,7 +55,6 @@ public class ClienteConverter {
                     Clientes clientes = new Clientes();
                     clientes.setId(clientesDTO.getId());
                     clientes.setNome(clientesDTO.getNome());
-                    clientes.setSobreNome(clientesDTO.getSobreNome());
                     clientes.setGenero(clientesDTO.getGenero());
                     clientes.setTelefone(clientesDTO.getTelefone());
                     clientes.setDataDeNascimento(clientesDTO.getDataDeNascimento());

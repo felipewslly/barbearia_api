@@ -41,6 +41,9 @@ public class AgendamentoServ implements AgendamentoServices {
     @Autowired
     private ClienteRepo clienteRepo;
 
+    @Autowired
+    private AgendamentoConverter agendamentoConverter;
+
 
 
 
@@ -52,41 +55,57 @@ public class AgendamentoServ implements AgendamentoServices {
         agendamento.setData(request.getData());
         agendamento.setHora(request.getHora());
 
-        List<Clientes> clientes = request.getClienteIds().stream()
+        List<Clientes> clientes = request.getClientes().stream()
                 .map(clienteRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
         agendamento.setClientes(clientes);
 
-        List<Servico> servicos = request.getServicoIds().stream()
+        List<Servico> servicos = request.getServicos().stream()
                 .map(serviceRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
         agendamento.setServicos(servicos);
 
-        List<Funcionario> funcionarios = request.getFuncionarioIds().stream()
+        List<Funcionario> funcionarios = request.getFuncionarios().stream()
                 .map(funcionarioRepo::findById)
                 .flatMap(Optional::stream)
                 .collect(Collectors.toList());
         agendamento.setFuncionarios(funcionarios);
 
-        Agendamento agendamentoSave = agendamentoRepo.save(agendamento);
-        return AgendamentoConverter.paraDTO(agendamentoSave);
+        Agendamento agendamentoAtualizado = agendamentoRepo.save(agendamento);
+        return AgendamentoConverter.paraDTO(agendamentoAtualizado);
     }
     @Override
     @Transactional
-    public AgendamentoDTO atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
+    public Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt) {
         Agendamento agendamentoExistente = agendamentoRepo.findById(agendamentoId).orElseThrow(
                 () -> new ApiException("ID NÃO ENCONTRADO"));
 
             agendamentoExistente.setData(agendamentoAtt.getData());
             agendamentoExistente.setHora(agendamentoAtt.getHora());
-            agendamentoExistente.setClientes(agendamentoAtt.getClientes());
-            agendamentoExistente.setServicos(agendamentoAtt.getServicos());
-            agendamentoExistente.setFuncionarios(agendamentoAtt.getFuncionarios());
 
-            Agendamento agendamentoAtualizado = agendamentoRepo.save(agendamentoExistente);
-            return AgendamentoConverter.paraDTO(agendamentoAtualizado);
+            List<Clientes> clientes = agendamentoAtt.getClientes().stream()
+                  .map(cliente -> clienteRepo.findById(cliente.getId()).orElseThrow(() -> new RuntimeException("Cliente não encontrado")))
+                  .collect(Collectors.toList());
+                  agendamentoExistente.setClientes(clientes);
+
+            List<Funcionario> funcionarios = agendamentoAtt.getFuncionarios().stream()
+                  .map(funcionario -> funcionarioRepo.findById(funcionario.getId()).orElseThrow(() -> new RuntimeException("Funcionário não encontrado")))
+                   .collect(Collectors.toList());
+          agendamentoExistente.setFuncionarios(funcionarios);
+
+             List<Servico> servicos = agendamentoAtt.getServicos().stream()
+                   .map(servico -> serviceRepo.findById(servico.getId()).orElseThrow(() -> new RuntimeException("Serviço não encontrado")))
+                  .collect(Collectors.toList());
+            agendamentoExistente.setServicos(servicos);
+
+            agendamentoExistente.setClientes(clientes);
+            agendamentoExistente.setFuncionarios(funcionarios);
+            agendamentoExistente.setServicos(servicos);
+
+                return agendamentoRepo.save(agendamentoExistente);
+
 
        }
 
@@ -109,16 +128,16 @@ public class AgendamentoServ implements AgendamentoServices {
         dto.setId(findById.getId());
         dto.setData(findById.getData());
         dto.setHora(findById.getHora());
-        dto.setClienteIds(clientesIds);
-        dto.setServicoIds(servicoIds);
-        dto.setFuncionarioIds(funcionarioIds);
+        dto.setClientes(clientesIds);
+        dto.setServicos(servicoIds);
+        dto.setFuncionarios(funcionarioIds);
 
         return dto;
     }
 
     @Override
     @Transactional
-    public List<AgendamentoDTO> removerAgendamentoPorId(Long agendamentoId) {
+    public void removerAgendamentoPorId(Long agendamentoId) {
        try{
            if (!agendamentoRepo.existsById(agendamentoId)){
                throw new IllegalArgumentException("ID do agendamento não encontrado");
@@ -129,8 +148,6 @@ public class AgendamentoServ implements AgendamentoServices {
        }catch (Exception e){
            throw new RuntimeException("Erro ao excluir agendamento", e);
        }
-
-    return null;
 
     }
 

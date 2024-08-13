@@ -12,11 +12,11 @@ public interface AgendamentoServices {
     @Transactional
     AgendamentoDTO criarAgendamento(AgendamentoDTO request);
 
-    AgendamentoDTO atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt);
+    Agendamento atualizarAgendamento(Long agendamentoId, Agendamento agendamentoAtt);
 
     AgendamentoDTO agendamentoPorId(Long id);
 
-    List<AgendamentoDTO> removerAgendamentoPorId(Long agendamentoId);
+    void removerAgendamentoPorId(Long agendamentoId);
 
     List<AgendamentoDTO> todosAgendamentos();
 

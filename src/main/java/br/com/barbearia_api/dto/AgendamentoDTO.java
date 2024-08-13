@@ -2,6 +2,7 @@ package br.com.barbearia_api.dto;
 
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.model.Funcionario;
+import br.com.barbearia_api.model.Servico;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,9 +23,9 @@ public class AgendamentoDTO {
     private Long id;
     private LocalDate data;
     private LocalTime hora;
-    private List<Long> clienteIds = new ArrayList<>();
-    private List<Long> funcionarioIds = new ArrayList<>();
-    private List<Long> servicoIds = new ArrayList<>();
-
+    private List<Long> clientes = new ArrayList<>();
+    private List<Long> funcionarios = new ArrayList<>();
+    private List<Long> servicos = new ArrayList<>();
 
 }
+

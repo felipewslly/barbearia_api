@@ -11,7 +11,7 @@ public interface FuncionarioServices {
 
     FuncionarioDTO funcionarioPorId(Long funcionarioId);
 
-    List<FuncionarioDTO> todosFuncionarios();
+    List<Funcionario> todosFuncionarios();
 
     Funcionario deletarFuncionarioId(Long funcionarioId);
 

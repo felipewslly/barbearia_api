@@ -1,6 +1,7 @@
 package br.com.barbearia_api.controller;
 
 
+import br.com.barbearia_api.converter.ClienteConverter;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.services.ClientesServ;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,9 @@ public class ClienteController{
 
     @Autowired
     private ClientesServ clientesServ;
+
+    @Autowired
+    private ClienteConverter clienteConverter;
 
 
     @PostMapping(consumes = "application/json", produces = "application/json")

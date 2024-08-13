@@ -22,7 +22,7 @@ public class FuncionarioServ implements FuncionarioServices {
     @Autowired
     private FuncionarioRepo funcionarioRepo;
 
-
+    @Autowired
     private FuncionarioConverter funcionarioConverter;
 
 
@@ -67,9 +67,8 @@ public class FuncionarioServ implements FuncionarioServices {
     }
 
     @Override
-    public List<FuncionarioDTO> todosFuncionarios() {
-         List<Funcionario> allFuncionarios = funcionarioRepo.findAll();
-            return funcionarioConverter.employeeListToDTOList(allFuncionarios);
+    public List<Funcionario> todosFuncionarios() {
+         return funcionarioRepo.findAll();
     }
 
     @Override
@@ -89,7 +88,7 @@ public class FuncionarioServ implements FuncionarioServices {
     @Override
     @Transactional
     public Funcionario atualizarPorId(Long funcionarioId, Funcionario funcionarioAtt) {
-        try{
+
             Funcionario funcionario = funcionarioRepo.findById(funcionarioId).orElseThrow(
                     () -> new IllegalArgumentException("Funcionário não encontrado"));
 
@@ -101,9 +100,5 @@ public class FuncionarioServ implements FuncionarioServices {
             funcionario.setTelefone(funcionarioAtt.getTelefone());
             return funcionarioRepo.save(funcionario);
 
-
-        }catch (ApiException e){
-            throw new ApiException("Funcionário não encontrado" + e.getMessage());
-        }
     }
 }

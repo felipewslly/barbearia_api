@@ -5,25 +5,35 @@ import br.com.barbearia_api.model.Agendamento;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.model.Servico;
+import br.com.barbearia_api.repository.FuncionarioRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 import java.util.stream.Collectors;
 
+@Component
 public class AgendamentoConverter {
-    public static AgendamentoDTO paraDTO(Agendamento agendamento){
+
+    @Autowired
+    private ClienteConverter clienteConverter;
+    @Autowired
+    private FuncionarioConverter funcionarioConverter;
+
+    public static AgendamentoDTO paraDTO(Agendamento agendamento) {
         AgendamentoDTO dto = new AgendamentoDTO();
         dto.setId(agendamento.getId());
         dto.setData(agendamento.getData());
         dto.setHora(agendamento.getHora());
-        dto.setClienteIds(agendamento.getClientes().stream()
+        dto.setClientes(agendamento.getClientes().stream()
                 .map(Clientes::getId)
                 .collect(Collectors.toList()));
 
-        dto.setFuncionarioIds(agendamento.getFuncionarios().stream()
+        dto.setFuncionarios(agendamento.getFuncionarios().stream()
                 .map(Funcionario::getId)
                 .collect(Collectors.toList()));
 
-        dto.setServicoIds(agendamento.getServicos().stream()
+        dto.setServicos(agendamento.getServicos().stream()
                 .map(Servico::getId)
                 .collect(Collectors.toList()));
 

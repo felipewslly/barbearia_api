@@ -1,5 +1,6 @@
 package br.com.barbearia_api.controller;
 
+import br.com.barbearia_api.converter.AgendamentoConverter;
 import br.com.barbearia_api.dto.AgendamentoDTO;
 import br.com.barbearia_api.model.Agendamento;
 import br.com.barbearia_api.services.AgendamentoServ;
@@ -22,6 +23,9 @@ public class AgendamentoController{
     @Autowired
     private AgendamentoServ agendamentoServ;
 
+    @Autowired
+    private AgendamentoConverter agendamentoConverter;
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     ResponseEntity<AgendamentoDTO> createSchedule(@RequestBody AgendamentoDTO agendamentoDTO){
         AgendamentoDTO createSchedule = agendamentoServ.criarAgendamento(agendamentoDTO);
@@ -41,20 +45,23 @@ public class AgendamentoController{
         return ResponseEntity.ok(allSchedule);
     }
 
-    @PutMapping(value = "/{id}")
-    ResponseEntity<AgendamentoDTO> updateScheduleById(@PathVariable Long id, @RequestBody Agendamento agendamentoAtt){
-        AgendamentoDTO updateScheduleById = agendamentoServ.atualizarAgendamento(id, agendamentoAtt);
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    ResponseEntity<Agendamento> updateScheduleById(@PathVariable Long id, @RequestBody Agendamento agendamentoAtt){
+        Agendamento updateScheduleById = agendamentoServ.atualizarAgendamento(id, agendamentoAtt);
 
         return ResponseEntity.ok(updateScheduleById);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<List<AgendamentoDTO>> deleteScheduleById(@PathVariable Long id){
-        List<AgendamentoDTO> deleteScheduleById = agendamentoServ.removerAgendamentoPorId(id);
-        if (deleteScheduleById == null || deleteScheduleById.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(deleteScheduleById);
+    ResponseEntity<Void> deleteScheduleById(@PathVariable Long id){
+        try{
+            agendamentoServ.removerAgendamentoPorId(id);
+            return ResponseEntity.noContent().build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build();
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(deleteScheduleById);
     }
     @GetMapping("/data")
     ResponseEntity<List<AgendamentoDTO>> findScheduleByDate(LocalDate data){
