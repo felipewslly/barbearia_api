@@ -58,7 +58,7 @@ public class FuncionarioServ implements FuncionarioServices {
         try{
             Funcionario funcionarioPorId = funcionarioRepo.findById(funcionarioId).orElseThrow(
                     () -> new IllegalArgumentException("Funcionário não encontrado"));
-            return funcionarioConverter.employeeToDTO(funcionarioPorId);
+            return FuncionarioConverter.mapToFuncionarioDto(funcionarioPorId);
 
 
         }catch (ApiException e){

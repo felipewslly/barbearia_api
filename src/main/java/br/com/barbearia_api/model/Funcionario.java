@@ -1,8 +1,6 @@
 package br.com.barbearia_api.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "funcionarios")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Funcionario {
 
     @Id
@@ -43,6 +42,16 @@ public class Funcionario {
     private LocalDate dataDeContratacao;
 
     @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Agendamento> agendamentos = new ArrayList<>();
+
+    public Funcionario(Long id, String nome, String cargo, String telefone, String email, String endereco, LocalDate dataDeContratacao) {
+        this.id = id;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.telefone = telefone;
+        this.email = email;
+        this.endereco = endereco;
+        this.dataDeContratacao = dataDeContratacao;
+    }
 }

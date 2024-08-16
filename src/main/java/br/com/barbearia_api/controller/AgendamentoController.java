@@ -3,6 +3,9 @@ package br.com.barbearia_api.controller;
 import br.com.barbearia_api.converter.AgendamentoConverter;
 import br.com.barbearia_api.dto.AgendamentoDTO;
 import br.com.barbearia_api.model.Agendamento;
+import br.com.barbearia_api.model.Clientes;
+import br.com.barbearia_api.model.Funcionario;
+import br.com.barbearia_api.model.Servico;
 import br.com.barbearia_api.services.AgendamentoServ;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -26,30 +29,29 @@ public class AgendamentoController{
     @Autowired
     private AgendamentoConverter agendamentoConverter;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    ResponseEntity<AgendamentoDTO> createSchedule(@RequestBody AgendamentoDTO agendamentoDTO){
-        AgendamentoDTO createSchedule = agendamentoServ.criarAgendamento(agendamentoDTO);
+    @PostMapping()
+    ResponseEntity<Agendamento> createSchedule(@RequestBody Agendamento agendamento){
+        Agendamento createSchedule = agendamentoServ.criarAgendamento(agendamento);
         return ResponseEntity.ok(createSchedule);
     }
-    @GetMapping("{id}")
-    ResponseEntity<AgendamentoDTO> scheduleById(@PathVariable Long id){
-        AgendamentoDTO scheduleById = agendamentoServ.agendamentoPorId(id);
+    @GetMapping("/{id}")
+    ResponseEntity<Agendamento> scheduleById(@PathVariable Long id){
+        Agendamento scheduleById = agendamentoServ.agendamentoPorId(id);
             return ResponseEntity.ok(scheduleById);
 
     }
 
     @GetMapping()
-    ResponseEntity<List<AgendamentoDTO>> allSchedule(){
-        List<AgendamentoDTO> allSchedule = agendamentoServ.todosAgendamentos();
+    ResponseEntity<List<Agendamento>> allSchedule(){
+        List<Agendamento> allSchedule = agendamentoServ.todosAgendamentos();
 
         return ResponseEntity.ok(allSchedule);
     }
 
-    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    ResponseEntity<Agendamento> updateScheduleById(@PathVariable Long id, @RequestBody Agendamento agendamentoAtt){
-        Agendamento updateScheduleById = agendamentoServ.atualizarAgendamento(id, agendamentoAtt);
-
-        return ResponseEntity.ok(updateScheduleById);
+    @PutMapping("/{id}")
+    ResponseEntity<Agendamento> updateScheduleById(@PathVariable("id") Long id, @RequestBody Agendamento agendamentoAtualizado){
+        Agendamento agendamento  = agendamentoServ.atualizarAgendamento(id, agendamentoAtualizado);
+            return ResponseEntity.ok(agendamento);
     }
 
     @DeleteMapping("/{id}")
@@ -63,35 +65,5 @@ public class AgendamentoController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/data")
-    ResponseEntity<List<AgendamentoDTO>> findScheduleByDate(LocalDate data){
-        List<AgendamentoDTO> findScheduleByDate = agendamentoServ.agendamentoPorData(data);
-        if (findScheduleByDate == null || findScheduleByDate.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(findScheduleByDate);
-        }
-        return ResponseEntity.ok(findScheduleByDate);
-    }
-
-    @GetMapping("/clientes/{id}")
-    ResponseEntity<List<AgendamentoDTO>> findByClientId(@PathVariable Long id){
-        List<AgendamentoDTO> findByClientId = agendamentoServ.agendamentoPorCliente(id);
-        if (findByClientId == null || findByClientId.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(findByClientId);
-        }
-        return ResponseEntity.ok(findByClientId);
-    }
-
-    @GetMapping("/servicos/{id}")
-    ResponseEntity<List<AgendamentoDTO>> findByServiceId(@PathVariable Long id){
-        List<AgendamentoDTO> findByServiceId = agendamentoServ.agendamentoPorServicos(id);
-
-        if (findByServiceId == null || findByServiceId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(findByServiceId);
-        }
-        return ResponseEntity.ok(findByServiceId);
-
-
-    }
-
 
 }

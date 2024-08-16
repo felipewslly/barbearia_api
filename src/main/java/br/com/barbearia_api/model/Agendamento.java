@@ -3,9 +3,7 @@ package br.com.barbearia_api.model;
 
 import br.com.barbearia_api.dto.ClienteDTO;
 import br.com.barbearia_api.dto.FuncionarioDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,12 +16,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 
-@Entity
-@Getter
 @Setter
+@Getter
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "agendamento")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Agendamento {
 
     @Id
@@ -42,8 +41,6 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id")
     )
-
-    @JsonBackReference
     private List<Clientes> clientes = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -52,8 +49,6 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "servico_id")
     )
-
-    @JsonBackReference
     private List<Servico> servicos = new ArrayList<>();
 
 
@@ -64,8 +59,6 @@ public class Agendamento {
             joinColumns = @JoinColumn(name = "agendamento_id"),
             inverseJoinColumns = @JoinColumn(name = "funcionario_id")
     )
-
-        @JsonBackReference
-        private List<Funcionario> funcionarios = new ArrayList<>();
+    private List<Funcionario> funcionarios = new ArrayList<>();
 
 }

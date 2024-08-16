@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.Server;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,9 +24,9 @@ public class AgendamentoDTO {
     private Long id;
     private LocalDate data;
     private LocalTime hora;
-    private List<Long> clientes = new ArrayList<>();
-    private List<Long> funcionarios = new ArrayList<>();
-    private List<Long> servicos = new ArrayList<>();
+    private List<Clientes> clientes = new ArrayList<>();
+    private List<Funcionario> funcionarios = new ArrayList<>();
+    private List<Servico> servicos = new ArrayList<>();
 
 }
 

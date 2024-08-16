@@ -4,6 +4,7 @@ package br.com.barbearia_api.controller;
 import br.com.barbearia_api.converter.ClienteConverter;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.services.ClientesServ;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,15 +45,19 @@ public class ClienteController{
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<Clientes>> deleteClienteById(@PathVariable Long id){
-        List<Clientes> clientesAtt =  clientesServ.deletarClienteId(id);
-        List<Clientes> clientesTotais = clientesServ.todosClientes();
-        return ResponseEntity.ok(clientesTotais);
+    public ResponseEntity<String> deleteClienteById(@PathVariable Long id){
+        try{
+            clientesServ.deletarClienteId(id);
+            return ResponseEntity.ok("Cliente removido com sucesso");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<Clientes>> updateClienteById(@PathVariable Long id, @RequestBody Clientes clienteAtt){
-        List<Clientes> clientes = clientesServ.atualizarPorId(id, clienteAtt);
+    public ResponseEntity<Clientes> updateClienteById(@PathVariable Long id, @RequestBody Clientes clienteAtt){
+        Clientes clientes = clientesServ.atualizarPorId(id, clienteAtt);
         return ResponseEntity.ok(clientes);
     }
 

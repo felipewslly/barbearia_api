@@ -14,9 +14,9 @@ public interface ClienteServices {
 
     List<Clientes> todosClientes();
 
-    List<Clientes> deletarClienteId(Long clienteId);
+    void deletarClienteId(Long clienteId);
 
-   List<Clientes> atualizarPorId(Long clienteId, Clientes clienteAtt);
+   Clientes atualizarPorId(Long clienteId, Clientes clienteAtt);
 
 
 }

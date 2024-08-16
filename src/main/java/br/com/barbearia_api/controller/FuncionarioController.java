@@ -22,7 +22,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioServices funcionarioServices;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping()
     public ResponseEntity<Funcionario> createEmployee(@RequestBody Funcionario funcionario) {
         Funcionario createEmployees = funcionarioServices.criarFuncionario(funcionario);
         return new ResponseEntity<>(createEmployees, HttpStatus.CREATED);

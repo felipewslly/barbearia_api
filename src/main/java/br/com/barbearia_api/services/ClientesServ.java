@@ -1,7 +1,7 @@
 package br.com.barbearia_api.services;
 
 
-import br.com.barbearia_api.converter.ClienteConverter;
+import br.com.barbearia_api.exception.ApiException;
 import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.repository.ClienteRepo;
 import br.com.barbearia_api.services.servicesint.ClienteServices;
@@ -47,50 +47,35 @@ public class ClientesServ implements ClienteServices {
 
     @Override
     public List<Clientes> todosClientes() {
-        List<Clientes> clientes = clienteRepo.findAll();
-            return clientes;
-
-    }
-
-    @Override
-    @Transactional
-    public List<Clientes> deletarClienteId(Long id) {
-        try{
-            if (!clienteRepo.existsById(id)){
-                throw new IllegalArgumentException("ID do cliente não encontrado");
-            }
-                clienteRepo.deleteById(id);
-        }catch(IllegalArgumentException e){
-            throw e;
-        }catch (Exception e){
-            throw new RuntimeException("Erro ao excluir o usuario", e);
-        }
-
         return clienteRepo.findAll();
 
     }
 
     @Override
     @Transactional
-    public List<Clientes> atualizarPorId(Long clienteId, Clientes clienteAtt) {
-        Optional<Clientes> clientesIds = clienteRepo.findById(clienteId);
-
-        if (clientesIds.isPresent()) {
-            Clientes clientes = clientesIds.get();
-            clientes.setNome(clienteAtt.getNome());
-            clientes.setCpf(clienteAtt.getCpf());
-            clientes.setGenero(clienteAtt.getGenero());
-            clientes.setTelefone(clienteAtt.getTelefone());
-            clientes.setIdade(clienteAtt.getIdade());
-            clientes.setEmail(clienteAtt.getEmail());
-            clientes.setDataDeCadastro(clienteAtt.getDataDeCadastro());
-            clientes.setDataDeNascimento(clienteAtt.getDataDeNascimento());
-            clientes.setAgendamentos(clienteAtt.getAgendamentos());
-            clienteRepo.save(clientes);
-        } else {
-            throw new RuntimeException("Cliente não encontrado com este ID: " + clientesIds);
+    public void deletarClienteId(Long id) {
+        if(!clienteRepo.existsById(id)){
+            throw new ApiException("ID NÃO EXISTENTE");
         }
+        clienteRepo.deleteById(id);
+    }
 
-        return clienteRepo.findAll();
+    @Override
+    @Transactional
+    public Clientes atualizarPorId(Long clienteId, Clientes clienteAtt) {
+        Clientes clienteExistente = clienteRepo.findById(clienteId)
+                .orElseThrow(() -> new ApiException("ID NÃO EXISTENTE"));
+
+        clienteExistente.setNome(clienteAtt.getNome());
+        clienteExistente.setIdade(clienteAtt.getIdade());
+        clienteExistente.setTelefone(clienteAtt.getTelefone());
+        clienteExistente.setDataDeNascimento(clienteAtt.getDataDeNascimento());
+        clienteExistente.setDataDeCadastro(clienteAtt.getDataDeCadastro());
+        clienteExistente.setEndereco(clienteAtt.getEndereco());
+        clienteExistente.setGenero(clienteAtt.getGenero());
+        clienteExistente.setEmail(clienteAtt.getEmail());
+
+
+        return clienteRepo.save(clienteExistente);
     }
 }
