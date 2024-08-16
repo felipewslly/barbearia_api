@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface FuncionarioServices {
 
-    Funcionario criarFuncionario(Funcionario funcionario);
+    Funcionario createEmployee(Funcionario funcionario);
 
-    FuncionarioDTO funcionarioPorId(Long funcionarioId);
+    Funcionario employeeById(Long funcionarioId);
 
-    List<Funcionario> todosFuncionarios();
+    List<Funcionario> allEmployees();
 
-    Funcionario deletarFuncionarioId(Long funcionarioId);
+    Funcionario deleteEmployeeById(Long funcionarioId);
 
-    Funcionario atualizarPorId(Long funcionarioId, Funcionario funcionarioAtt);
+    Funcionario updateEmployeeById(Long funcionarioId, Funcionario funcionarioAtt);
 }

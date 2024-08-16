@@ -24,7 +24,7 @@ public class ClientesServ implements ClienteServices {
 
     @Override
     @Transactional
-    public Clientes criarCliente(Clientes cliente) {
+    public Clientes createClient(Clientes cliente) {
 
             Clientes cliente1 = new Clientes();
             cliente1.setNome(cliente.getNome());
@@ -40,20 +40,20 @@ public class ClientesServ implements ClienteServices {
         }
 
     @Override
-    public Clientes clientePorId(Long clienteId) {
+    public Clientes clientById(Long clienteId) {
         return clienteRepo.findById(clienteId).orElseThrow(
                 ()-> new IllegalArgumentException("ID DO CLIENTE NÃO EXISTE"));
     }
 
     @Override
-    public List<Clientes> todosClientes() {
+    public List<Clientes> allClients() {
         return clienteRepo.findAll();
 
     }
 
     @Override
     @Transactional
-    public void deletarClienteId(Long id) {
+    public void deleteClientById(Long id) {
         if(!clienteRepo.existsById(id)){
             throw new ApiException("ID NÃO EXISTENTE");
         }
@@ -62,7 +62,7 @@ public class ClientesServ implements ClienteServices {
 
     @Override
     @Transactional
-    public Clientes atualizarPorId(Long clienteId, Clientes clienteAtt) {
+    public Clientes updateClientById(Long clienteId, Clientes clienteAtt) {
         Clientes clienteExistente = clienteRepo.findById(clienteId)
                 .orElseThrow(() -> new ApiException("ID NÃO EXISTENTE"));
 

@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ClienteServices {
 
-    Clientes criarCliente(Clientes cliente);
+    Clientes createClient(Clientes cliente);
 
-    Clientes clientePorId(Long clienteId);
+    Clientes clientById(Long clienteId);
 
-    List<Clientes> todosClientes();
+    List<Clientes> allClients();
 
-    void deletarClienteId(Long clienteId);
+    void deleteClientById(Long clienteId);
 
-   Clientes atualizarPorId(Long clienteId, Clientes clienteAtt);
+   Clientes updateClientById(Long clienteId, Clientes clienteAtt);
 
 
 }

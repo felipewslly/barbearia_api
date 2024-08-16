@@ -1,15 +1,10 @@
 package br.com.barbearia_api.model;
-
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
 @Getter
 @Setter
 @AllArgsConstructor

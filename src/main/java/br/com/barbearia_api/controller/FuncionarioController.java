@@ -1,7 +1,4 @@
 package br.com.barbearia_api.controller;
-
-import br.com.barbearia_api.converter.FuncionarioConverter;
-import br.com.barbearia_api.dto.FuncionarioDTO;
 import br.com.barbearia_api.model.Funcionario;
 import br.com.barbearia_api.services.servicesint.FuncionarioServices;
 import lombok.AllArgsConstructor;
@@ -23,32 +20,32 @@ public class FuncionarioController {
     private FuncionarioServices funcionarioServices;
 
     @PostMapping()
-    public ResponseEntity<Funcionario> createEmployee(@RequestBody Funcionario funcionario) {
-        Funcionario createEmployees = funcionarioServices.criarFuncionario(funcionario);
+    public ResponseEntity<Funcionario> createEmployee(@RequestBody Funcionario employee) {
+        Funcionario createEmployees = funcionarioServices.createEmployee(employee);
         return new ResponseEntity<>(createEmployees, HttpStatus.CREATED);
     }
 
     @GetMapping()
     public ResponseEntity<List<Funcionario>> allEmployees() {
-        List<Funcionario> allEmployee = funcionarioServices.todosFuncionarios();
+        List<Funcionario> allEmployee = funcionarioServices.allEmployees();
         return ResponseEntity.ok(allEmployee);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioDTO> findEmployeeById(@PathVariable Long id) {
-        FuncionarioDTO funcionario = funcionarioServices.funcionarioPorId(id);
-        return ResponseEntity.ok(funcionario);
+    public ResponseEntity<Funcionario> findEmployeeById(@PathVariable Long id) {
+        Funcionario employeeById = funcionarioServices.employeeById(id);
+        return ResponseEntity.ok(employeeById);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Funcionario> deleteEmployeeById(@PathVariable Long id) {
-        Funcionario funcionario = funcionarioServices.deletarFuncionarioId(id);
-        return ResponseEntity.ok(funcionario);
+        Funcionario employeeDelete = funcionarioServices.deleteEmployeeById(id);
+        return ResponseEntity.ok(employeeDelete);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Funcionario> updateEmployeeById(@PathVariable Long id, @RequestBody Funcionario updatedEmployee) {
-        Funcionario funcionario = funcionarioServices.atualizarPorId(id, updatedEmployee);
-        return ResponseEntity.ok(funcionario);
+        Funcionario newEmployee = funcionarioServices.updateEmployeeById(id, updatedEmployee);
+        return ResponseEntity.ok(newEmployee);
     }
 }

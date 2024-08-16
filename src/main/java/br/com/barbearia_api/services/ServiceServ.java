@@ -20,49 +20,49 @@ public class ServiceServ implements ServicoService {
     private ServicoRepo servicoRepo;
 
     @Override
-    public Servico registrarServico(Servico servico) {
-        Servico servico1 = new Servico();
-        servico1.setPreco(servico.getPreco());
-        servico1.setCorte(servico.getCorte());
-        servico1.setDescricao(servico.getDescricao());
-        servicoRepo.save(servico1);
-        return servico1;
+    public Servico serviceRegister(Servico servico) {
+        Servico newService = new Servico();
+        newService.setPreco(servico.getPreco());
+        newService.setCorte(servico.getCorte());
+        newService.setDescricao(servico.getDescricao());
+        servicoRepo.save(newService);
+        return newService;
     }
     @Override
-    public Servico atualizarServicoPorId(Long servicoId, Servico servicoAtt){
-        Servico servicoById = servicoRepo.findById(servicoId).orElseThrow(
+    public Servico updateServiceById(Long servicoId, Servico newService){
+        Servico updateService = servicoRepo.findById(servicoId).orElseThrow(
                 () -> new ApiException("ID não encontrado"));
-        servicoById.setCorte(servicoAtt.getCorte());
-        servicoById.setPreco(servicoAtt.getPreco());
-        servicoById.setDescricao(servicoAtt.getDescricao());
-            return servicoRepo.save(servicoById);
+        updateService.setCorte(newService.getCorte());
+        updateService.setPreco(newService.getPreco());
+        updateService.setDescricao(newService.getDescricao());
+            return servicoRepo.save(updateService);
 
     }
     @Override
-    public List<Servico> todosServicos() {
-        List<Servico> servico = servicoRepo.findAll();
-            if (servico.isEmpty()){
-                throw new RuntimeException("SERVICOS VAZIOS");
+    public List<Servico> allServices() {
+        List<Servico> allService = servicoRepo.findAll();
+            if (allService.isEmpty()){
+                throw new ApiException("nenhum serviço registrado");
             }
-            return servico;
+            return allService;
     }
 
     @Override
-    public void removerServicoPorId(Long id) {
+    public void deleteServiceById(Long id) {
         Optional<Servico> servico = servicoRepo.findById(id);
             if (servico.isPresent()){
                 servicoRepo.deleteById(id);
             }else {
-                throw new RuntimeException("ID NÃO ENCONTRADO");
+                throw new RuntimeException("ID NÃO ENCONTRADO/EXISTENTE");
             }
     }
     @Override
-    public Optional<Servico> servicoPorId(Long id) {
+    public Optional<Servico> serviceById(Long id) {
         Optional<Servico> servicoById = servicoRepo.findById(id);
             if (servicoById.isPresent()){
                 return servicoById;
             }else {
-                throw new RuntimeException("ID NÃO EXISTENTE");
+                throw new RuntimeException("ID NÃO ENCONTRADO/EXISTENTE");
             }
     }
 }

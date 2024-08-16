@@ -1,21 +1,19 @@
 package br.com.barbearia_api.services.servicesint;
-
 import br.com.barbearia_api.model.Servico;
-
 import java.util.List;
 import java.util.Optional;
 
 public interface ServicoService {
 
-    Servico registrarServico(Servico servico);
+    Servico serviceRegister(Servico servico);
 
-    Servico atualizarServicoPorId(Long id, Servico servicoAtt);
+    Servico updateServiceById(Long id, Servico servicoAtt);
 
-    List<Servico> todosServicos();
+    List<Servico> allServices();
 
-    void removerServicoPorId(Long servicoId);
+    void deleteServiceById(Long servicoId);
 
-    Optional<Servico> servicoPorId(Long id);
+    Optional<Servico> serviceById(Long id);
 
 
 
