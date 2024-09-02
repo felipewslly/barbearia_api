@@ -1,7 +1,9 @@
 package br.com.barbearia_api.model;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name= "clientes")
+@Table(name = "clientes")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Clientes {
 
@@ -29,7 +31,7 @@ public class Clientes {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "cpf", unique = true)
+    @Column(name = "cpf", length = 11, unique = true, nullable = false)
     private String cpf;
 
     @Column(name = "data-de-nascimento")

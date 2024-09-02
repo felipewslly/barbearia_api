@@ -1,5 +1,6 @@
 package br.com.barbearia_api.controller;
 import br.com.barbearia_api.model.Agendamento;
+import br.com.barbearia_api.model.Clientes;
 import br.com.barbearia_api.services.AgendamentoServ;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -34,7 +37,6 @@ public class AgendamentoController{
     @GetMapping()
     ResponseEntity<List<Agendamento>> allSchedule(){
         List<Agendamento> allSchedule = agendamentoServ.allSchedule();
-
         return ResponseEntity.ok(allSchedule);
     }
 
@@ -55,5 +57,21 @@ public class AgendamentoController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GetMapping("/cpf/{cpf}")
+    ResponseEntity<List<Agendamento>> findAppointmentsByClientCpf(@PathVariable String cpf){
+        List<Agendamento> agendamento = agendamentoServ.findAppoitmentsByClientCpf(cpf);
+            if (agendamento == null){
+                return ResponseEntity.notFound().build();
+            }
+                return ResponseEntity.ok(agendamento);
+    }
 
+    @GetMapping("/data/{data}")
+    ResponseEntity<Agendamento> findByDate(@PathVariable LocalDate date){
+        Agendamento scheduleByDate = agendamentoServ.findByDate(date);
+            if (scheduleByDate != null){
+                return ResponseEntity.ok(scheduleByDate);
+            }
+                return ResponseEntity.notFound().build();
+    }
 }

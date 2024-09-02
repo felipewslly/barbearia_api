@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,23 +25,28 @@ public class ClientesServ implements ClienteServices {
     @Transactional
     public Clientes createClient(Clientes cliente) {
 
-            Clientes cliente1 = new Clientes();
-            cliente1.setNome(cliente.getNome());
-            cliente1.setEndereco(cliente.getEndereco());
-            cliente1.setTelefone(cliente.getTelefone());
-            cliente1.setCpf(cliente.getCpf());
-            cliente1.setGenero(cliente.getGenero());
-            cliente1.setDataDeNascimento(cliente.getDataDeNascimento());
-            cliente1.setIdade(cliente.getIdade());
-            cliente1.setEmail(cliente.getEmail());
-            cliente1.setDataDeCadastro(cliente.getDataDeCadastro());
-            return clienteRepo.save(cliente1);
-        }
+        Clientes cliente1 = new Clientes();
+        cliente1.setNome(cliente.getNome());
+        cliente1.setEndereco(cliente.getEndereco());
+        cliente1.setTelefone(cliente.getTelefone());
+        cliente1.setCpf(cliente.getCpf());
+        cliente1.setGenero(cliente.getGenero());
+        cliente1.setDataDeNascimento(cliente.getDataDeNascimento());
+        cliente1.setIdade(cliente.getIdade());
+        cliente1.setEmail(cliente.getEmail());
+        cliente1.setDataDeCadastro(cliente.getDataDeCadastro());
+        return clienteRepo.save(cliente1);
+    }
+
+
+    public Clientes clientByCpf(String cpf) {
+        return clienteRepo.findClientByCpf(cpf);
+    }
 
     @Override
     public Clientes clientById(Long clienteId) {
         return clienteRepo.findById(clienteId).orElseThrow(
-                ()-> new IllegalArgumentException("ID DO CLIENTE NÃO EXISTE"));
+                () -> new IllegalArgumentException("ID DO CLIENTE NÃO EXISTE"));
     }
 
     @Override
@@ -54,7 +58,7 @@ public class ClientesServ implements ClienteServices {
     @Override
     @Transactional
     public void deleteClientById(Long id) {
-        if(!clienteRepo.existsById(id)){
+        if (!clienteRepo.existsById(id)) {
             throw new ApiException("ID NÃO EXISTENTE");
         }
         clienteRepo.deleteById(id);
@@ -78,4 +82,5 @@ public class ClientesServ implements ClienteServices {
 
         return clienteRepo.save(clienteExistente);
     }
+
 }

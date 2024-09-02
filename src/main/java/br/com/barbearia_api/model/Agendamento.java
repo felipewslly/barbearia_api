@@ -15,9 +15,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
-
-@Setter
-@Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -60,5 +57,54 @@ public class Agendamento {
             inverseJoinColumns = @JoinColumn(name = "funcionario_id")
     )
     private List<Funcionario> funcionarios = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public LocalTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+
+    public List<Clientes> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(List<Clientes> clientes) {
+        this.clientes = clientes;
+    }
+
+    public List<Servico> getServicos() {
+        return servicos;
+    }
+
+    public void setServicos(List<Servico> servicos) {
+        this.servicos = servicos;
+    }
+
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+
 
 }

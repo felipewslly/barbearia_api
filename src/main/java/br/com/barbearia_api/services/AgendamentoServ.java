@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,6 +65,13 @@ public class AgendamentoServ implements AgendamentoServices {
         agendamento.setFuncionarios(funcionarios);
 
         return agendamentoRepo.save(agendamento);
+    }
+
+    public Agendamento findByDate(LocalDate date){
+        return agendamentoRepo.findScheduleByDate(date);
+    }
+    public List<Agendamento> findAppoitmentsByClientCpf(String cpf){
+        return agendamentoRepo.clientsWithOrWithoutAppointments(cpf);
     }
 
     @Override
